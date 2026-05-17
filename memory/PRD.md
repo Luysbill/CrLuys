@@ -48,10 +48,20 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Live search + category filter on homepage
 - ✅ Admin login (JWT, seeded admin)
 - ✅ Admin dashboard with 3 tabs: Products (full CRUD), Subscribers, Messages
-- ✅ 20 seeded sample products across all 5 categories (Keystone, NeuroPrime, Lean Bliss, Tonic Greens, Mega Fitness Bundle, No Grid Survival, The Genius Wave, etc.)
+- ✅ 20 seeded sample products across all 5 categories
 - ✅ Sticky responsive header (desktop nav + mobile hamburger menu)
 - ✅ Backend tested: 27/27 ✅
 - ✅ Frontend tested: 24/24 critical flows ✅
+
+## Smart Investing External Integration (2026-05-17)
+- ✅ Smart Investing now wired directly to the external destination `https://wealth-unlock-3.emergent.host/` (Keystone Investors Club)
+- ✅ Featured primary category: gold "FEATURED" badge on the hero pill + gold styling in header nav
+- ✅ Hero CTA "Start Your Transformation" opens external in new tab
+- ✅ Homepage Smart Investing slot uses the new FeaturedFinancialSection (cinematic): "Financial Freedom Changes Everything." headline, 3 pillars, 4 stats, "Enter the Vault" / "Why Keystone" CTAs + link strip — all opening external in new tab
+- ✅ `/category/smart-investing` shows a cinematic handoff page with auto-redirect (~1.8s) + manual "Enter Now" button
+- ✅ `/product/{any-smart-investing-slug}` auto-redirects to the external destination
+- ✅ Header nav, footer link, search results and mobile menu all open Smart Investing externally in new tab
+- ✅ Frontend re-tested: 15/15 ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
