@@ -25,7 +25,6 @@ export const tokenStore = {
 };
 
 export const SMART_INVESTING_EXTERNAL_URL = "https://wealth-unlock-3.emergent.host/";
-export const SMART_INVESTING_INTERNAL_PATH = "/smart-investing";
 
 export const CATEGORIES = [
     {
@@ -39,7 +38,6 @@ export const CATEGORIES = [
         icon: "TrendingUp",
         accent: "from-amber-300/40 to-yellow-600/10",
         external_url: SMART_INVESTING_EXTERNAL_URL,
-        internal_path: SMART_INVESTING_INTERNAL_PATH,
         featured_primary: true,
     },
     {

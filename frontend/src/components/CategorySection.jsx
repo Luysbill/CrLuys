@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { ArrowRight, TrendingUp, HeartPulse, Dumbbell, Leaf, Brain } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { CATEGORY_IMAGES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 
 const ICON_MAP = { TrendingUp, HeartPulse, Dumbbell, Leaf, Brain };
 
 export default function CategorySection({ category, products, reverse = false }) {
     const Icon = ICON_MAP[category.icon] || TrendingUp;
+    const { openOnboarding } = useKeystoneOnboarding();
     const featured = products.filter((p) => p.featured).slice(0, 1);
     const grid = products
         .filter((p) => !featured.find((f) => f.id === p.id))
@@ -74,9 +76,15 @@ export default function CategorySection({ category, products, reverse = false })
                         <p className="text-cream/65 text-lg font-light leading-relaxed mb-8 max-w-xl">
                             {category.description}
                         </p>
-                        {category.internal_path ? (
-                            <Link
-                                to={category.internal_path}
+                        {category.external_url ? (
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    openOnboarding(
+                                        category.external_url,
+                                        `category-section-${category.slug}`
+                                    )
+                                }
                                 data-testid={`category-cta-${category.slug}`}
                                 className="inline-flex items-center gap-3 px-7 py-4 rounded-full border border-gold/40 text-cream hover:text-ink hover:bg-gold transition-all duration-500 group"
                             >
@@ -84,7 +92,7 @@ export default function CategorySection({ category, products, reverse = false })
                                     Open Destination
                                 </span>
                                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                            </Link>
+                            </button>
                         ) : (
                             <Link
                                 to={`/category/${category.slug}`}

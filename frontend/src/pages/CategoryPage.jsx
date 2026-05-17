@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
-import { ArrowRight, Sparkles, ShieldCheck, Star, ArrowLeft } from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { ArrowRight, Sparkles, ShieldCheck, Star, ArrowLeft, ArrowUpRight } from "lucide-react";
 import { apiClient, CATEGORIES, CATEGORY_IMAGES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import ProductCard from "../components/ProductCard";
 import NewsletterCTA from "../components/NewsletterCTA";
 import TestimonialGrid from "../components/TestimonialGrid";
@@ -10,11 +11,27 @@ export default function CategoryPage() {
     const { slug } = useParams();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { openOnboarding } = useKeystoneOnboarding();
 
     const category = CATEGORIES.find((c) => c.slug === slug);
 
+    // For external-destination categories (Smart Investing), auto-open onboarding modal
     useEffect(() => {
-        if (category?.internal_path) {
+        if (category?.external_url) {
+            const t = setTimeout(
+                () =>
+                    openOnboarding(
+                        category.external_url,
+                        `category-page-${category.slug}`
+                    ),
+                500
+            );
+            return () => clearTimeout(t);
+        }
+    }, [category, openOnboarding]);
+
+    useEffect(() => {
+        if (category?.external_url) {
             setLoading(false);
             return;
         }
@@ -42,9 +59,69 @@ export default function CategoryPage() {
         );
     }
 
-    // Featured flagship category → redirect to its dedicated internal landing page
-    if (category.internal_path) {
-        return <Navigate to={category.internal_path} replace />;
+    // Cinematic handoff page for external-destination categories
+    if (category.external_url) {
+        return (
+            <main
+                data-testid="category-external-redirect"
+                className="min-h-screen pt-32 pb-32 flex items-center justify-center relative overflow-hidden"
+            >
+                <div className="absolute inset-0 -z-10">
+                    <img
+                        src={CATEGORY_IMAGES[category.slug]}
+                        alt={category.name}
+                        className="absolute inset-0 h-full w-full object-cover opacity-50"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/85 to-ink/40" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-gold/15 blur-[120px]" />
+                </div>
+                <div className="max-w-2xl mx-auto px-6 text-center">
+                    <div className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full glass">
+                        <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
+                        <span className="text-[10px] uppercase tracking-[0.45em] text-gold/95">
+                            {category.number} · The Flagship Pillar
+                        </span>
+                    </div>
+                    <h1 className="font-serif text-5xl md:text-7xl text-cream leading-[0.95] mb-6 tracking-tight">
+                        Financial Freedom
+                        <br />
+                        <span className="italic gold-gradient-text">
+                            Changes Everything.
+                        </span>
+                    </h1>
+                    <p className="text-cream/70 font-light text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+                        Opening your Keystone Investors Club destination — your private
+                        Smart Investing experience.
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() =>
+                            openOnboarding(
+                                category.external_url,
+                                `category-handoff-${category.slug}`
+                            )
+                        }
+                        data-testid="category-external-cta"
+                        className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] group"
+                    >
+                        <span className="text-sm uppercase tracking-[0.3em] font-medium">
+                            Open Keystone
+                        </span>
+                        <ArrowUpRight className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                    <p className="text-xs text-cream/45 mt-6">
+                        Brief onboarding · Opens in a new tab
+                    </p>
+                    <Link
+                        to="/"
+                        data-testid="category-external-back"
+                        className="mt-10 inline-flex items-center gap-2 text-cream/55 hover:text-gold transition-colors text-xs uppercase tracking-[0.3em]"
+                    >
+                        <ArrowLeft className="h-4 w-4" /> Back to ecosystem
+                    </Link>
+                </div>
+            </main>
+        );
     }
 
     const startHere = products.filter((p) => p.start_here).slice(0, 3);

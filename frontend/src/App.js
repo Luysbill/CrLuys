@@ -10,7 +10,6 @@ import HomePage from "@/pages/HomePage";
 import CategoryPage from "@/pages/CategoryPage";
 import ProductPage from "@/pages/ProductPage";
 import ContactPage from "@/pages/ContactPage";
-import SmartInvestingPage from "@/pages/SmartInvestingPage";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -23,7 +22,6 @@ function Shell() {
             {!isAdmin && <Header />}
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/smart-investing" element={<SmartInvestingPage />} />
                 <Route path="/category/:slug" element={<CategoryPage />} />
                 <Route path="/product/:slug" element={<ProductPage />} />
                 <Route path="/contact" element={<ContactPage />} />

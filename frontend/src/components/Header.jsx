@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X, Search } from "lucide-react";
 import { CATEGORIES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 
 const NAV = [
     ...CATEGORIES.map((c) => ({
         name: c.short,
-        to: c.internal_path || `/category/${c.slug}`,
+        to: c.external_url || `/category/${c.slug}`,
+        external: Boolean(c.external_url),
         featured: Boolean(c.featured_primary),
     })),
     { name: "Contact", to: "/contact" },
@@ -16,6 +18,7 @@ export default function Header() {
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
+    const { openOnboarding } = useKeystoneOnboarding();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 30);
@@ -160,6 +163,23 @@ export default function Header() {
                 >
                     {NAV.map((n) => {
                         const testid = `mobile-nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`;
+                        if (n.external) {
+                            return (
+                                <button
+                                    key={n.to}
+                                    type="button"
+                                    onClick={() =>
+                                        openOnboarding(n.to, `mobile-nav-${n.name}`)
+                                    }
+                                    data-testid={testid}
+                                    className={`text-base tracking-wide text-left ${
+                                        n.featured ? "text-gold" : "text-cream/85"
+                                    }`}
+                                >
+                                    {n.name}
+                                </button>
+                            );
+                        }
                         return (
                             <NavLink
                                 key={n.to}
@@ -167,9 +187,7 @@ export default function Header() {
                                 data-testid={testid}
                                 className={({ isActive }) =>
                                     `text-base tracking-wide ${
-                                        isActive || n.featured
-                                            ? "text-gold"
-                                            : "text-cream/85"
+                                        isActive ? "text-gold" : "text-cream/85"
                                     }`
                                 }
                             >
