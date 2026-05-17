@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend E2E testing of CrLuys LifeStyle. Verified homepage hero, 5 category pills and smooth-scroll, 5 category sections in correct order (smart-investing, health-wellness, fitness-nutrition, self-sufficiency, mindset-balance), live search with results count, native SELECT category filter, newsletter submit (200 OK, sonner toast 'You're in. Welcome to CrLuys LifeStyle.'), product card -> /product/:slug navigation, premium product page with affiliate CTA (target=_blank, rel=noopener noreferrer, href to external URL), category page (/category/smart-investing) header + products, contact form submit with success toast, admin guard redirect (/admin -> /admin/login when unauthenticated), admin login (admin@crluys.com / CrLuys2026!) -> dashboard with 4 stats and 3 tabs (Products/Subscribers/Messages), full admin Product CRUD (create+edit+delete via UI with proper data-testid form fields), admin logout, mobile responsive (390x844) hamburger toggle opens mobile-menu with all nav links. Visual polish confirmed: dark cinematic background, gold accents, Cormorant Garamond serif italic + Outfit sans typography throughout. ~24/24 critical flows pass.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Hydration warning in console on AdminDashboard: <span> rendered as a child of <option> in product-form category select (AdminDashboard.jsx ~line 131). React logs 'In HTML, <span> cannot be a child of <option>. This will cause a hydration error.' Functionally harmless (select still works) but should be cleaned up. Likely caused by the dev-time component instrumentation wrapping the {c.number} — {c.short} expression. If using a non-dev wrapper, the rendered <option> children should be plain text only.",
+    "Carry-over from iteration_1: CORS allow_origins=['*'] with allow_credentials=False but httpOnly cookies are set on login. Frontend currently uses Bearer/localStorage token, so functional, but inconsistent. Either drop the cookie path or set explicit origins + credentials=true.",
+    "Carry-over: no brute-force lockout on /api/auth/login; no rate-limit on /api/newsletter or /api/contact; search regex not escaped (could 500 on parens).",
+    "Newsletter success toast text ('You're in. Welcome...') is fine but worth knowing for downstream tests — does not contain the word 'success/thank/sent'."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (carry-over 27/27)", "frontend": "100% of critical flows (24/24)"},
+  "test_credentials": "admin@crluys.com / CrLuys2026! (verified working)",
+  "seed_data_creation": "No new seed. Created and cleaned up 1 TEST_ product (test-product-{ts}) via admin UI CRUD. Submitted 2 TEST_-prefixed newsletter emails and 1 TEST_-prefixed contact message during run (these remain in DB as expected — admin can see them in Subscribers/Messages tabs).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All critical frontend flows pass. Important form-field testids in AdminDashboard product modal: form-title, form-slug, form-category (native SELECT, use select_option value=<slug>), form-price, form-headline, form-short_description, textarea[name=long_description] (no testid), form-image_url, form-affiliate_url, form-benefits (textarea, one per line). Delete uses window.confirm — listen for 'dialog' and accept. Newsletter toast uses sonner ([data-sonner-toast]). Hero pill testid pattern is hero-category-pill-<slug> with the 5 real slugs listed above (NOT 'curated-living-8' which is the preview domain). Section IDs follow #category-<slug>.",
+  "rca of the issue": "Initial run mis-typed product form field names (subtitle/description/image) — re-ran with correct names from AdminDashboard.jsx and full CRUD succeeded. Newsletter feedback was initially flagged because heuristic looked for 'thank/sent/success'; actual sonner toast says 'You're in. Welcome to CrLuys LifeStyle.' Confirmed via [data-sonner-toast] selector and 200 response from /api/newsletter."
+}
