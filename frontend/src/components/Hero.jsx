@@ -28,7 +28,13 @@ export default function Hero() {
 
             <div className="relative max-w-7xl mx-auto px-6 md:px-12 w-full">
                 <div className="max-w-3xl animate-fade-up">
-                    <div className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full glass">
+                    <img
+                        src="/crluys-logo.png"
+                        alt="CrLuys Lifestyle"
+                        className="brand-logo-soft hidden md:block h-20 w-auto mb-8 opacity-95 select-none"
+                        draggable={false}
+                    />
+                    <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 rounded-full glass">
                         <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
                         <span className="text-[11px] uppercase tracking-[0.35em] text-cream/85">
                             A Premium Lifestyle Ecosystem

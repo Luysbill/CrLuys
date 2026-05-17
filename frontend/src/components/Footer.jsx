@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, Instagram, Youtube, Send } from "lucide-react";
+import { Instagram, Youtube, Send } from "lucide-react";
 import { apiClient, formatApiErrorDetail, CATEGORIES } from "../lib/api";
 import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import { toast } from "sonner";
@@ -46,18 +46,13 @@ export default function Footer() {
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
                     <div className="md:col-span-5">
-                        <Link to="/" className="flex items-center gap-3 mb-5">
-                            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 bg-ink">
-                                <Sparkles className="h-4 w-4 text-gold" />
-                            </span>
-                            <span className="leading-tight">
-                                <span className="block font-serif text-2xl text-cream">
-                                    CrLuys
-                                </span>
-                                <span className="block text-[10px] uppercase tracking-[0.3em] text-gold/80">
-                                    Lifestyle
-                                </span>
-                            </span>
+                        <Link to="/" className="inline-block mb-5">
+                            <img
+                                src="/crluys-logo.png"
+                                alt="CrLuys Lifestyle"
+                                className="brand-logo-soft h-20 md:h-24 w-auto select-none"
+                                draggable={false}
+                            />
                         </Link>
                         <p className="text-cream/60 font-light max-w-md leading-relaxed">
                             A curated lifestyle ecosystem for the modern soul — wellness,

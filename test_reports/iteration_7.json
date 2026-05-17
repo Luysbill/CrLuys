@@ -1,0 +1,23 @@
+{
+  "summary": "Quick regression test after brand logo update (text wordmark -> /crluys-logo.png image). All 15 critical checks passed: header logo (desktop h=48, mobile h=44, href=/), hero logo (visible on desktop, hidden on mobile per `hidden md:block`), footer logo (h=96), admin login logo, favicon/favicon.ico/crluys-logo.png all return 200. Functional regressions verified: hero CTA opens onboarding modal, 5 hero category pills render, hamburger toggle opens mobile menu, admin login with admin@crluys.com / CrLuys2026! works, /admin dashboard shows Leads/Subscribers/Messages tabs. No visible black rectangle behind logo (uses alpha PNG, drop-shadow only).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All logo refs centralized to /crluys-logo.png — consider exposing as a single constant (e.g. BRAND_LOGO in lib/api or a brand.js) for easier future swaps; currently the path string is duplicated across Header.jsx, Hero.jsx, Footer.jsx, AdminLogin.jsx.",
+    "Hero logo uses `hidden md:block` so it disappears on mobile (verified behaving correctly). If product intends mobile users to also see the logo above the headline, swap to always visible with a smaller mobile size; currently this is the documented intent so no action needed."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only)", "frontend": "100% (15/15)"},
+  "test_credentials": "Admin: admin@crluys.com / CrLuys2026! (verified working)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Brand logo regression complete. /crluys-logo.png (214KB transparent PNG) and favicons all serve 200. Header data-testid=header-logo, mobile menu data-testid=mobile-menu / mobile-menu-toggle, admin form data-testid=admin-login-form/admin-email/admin-password/admin-login-submit. Admin dashboard has visible tabs (Leads, Subscribers, Messages) by text. Onboarding modal opens via hero-cta-start.",
+  "rca of the issue": "n/a — no defects found"
+}

@@ -194,6 +194,10 @@ html {
     scrollbar-width: none;
 }
 
-[data-debug-wrapper="true"] {
-    display: contents !important;
+/* ============ Brand Logo blending ============ */
+.brand-logo {
+    /* Logo PNG already has proper alpha — just add subtle hover affordance */
+}
+.brand-logo-soft {
+    filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.18));
 }

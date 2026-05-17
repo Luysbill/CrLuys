@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Search, Sparkles } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { CATEGORIES } from "../lib/api";
 import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 
@@ -44,19 +44,14 @@ export default function Header() {
                 <Link
                     to="/"
                     data-testid="header-logo"
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3 group shrink-0"
                 >
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 bg-ink-50 transition-all group-hover:border-gold group-hover:shadow-[0_0_18px_rgba(212,175,55,0.35)]">
-                        <Sparkles className="h-4 w-4 text-gold" />
-                    </span>
-                    <span className="leading-tight">
-                        <span className="block font-serif text-2xl text-cream tracking-tight">
-                            CrLuys
-                        </span>
-                        <span className="block text-[10px] uppercase tracking-[0.3em] text-gold/80">
-                            Lifestyle
-                        </span>
-                    </span>
+                    <img
+                        src="/crluys-logo.png"
+                        alt="CrLuys Lifestyle — Improve Your Potential Living Way"
+                        className="brand-logo h-11 md:h-12 w-auto select-none transition-all duration-500 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.45)]"
+                        draggable={false}
+                    />
                 </Link>
 
                 <nav className="hidden lg:flex items-center gap-5 xl:gap-7">

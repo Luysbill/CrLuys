@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Mail, Sparkles } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { formatApiErrorDetail } from "../lib/api";
 import { toast } from "sonner";
@@ -41,9 +41,12 @@ export default function AdminLogin() {
                 className="w-full max-w-md bg-ink-100/80 backdrop-blur-xl border border-gold/20 rounded-3xl p-10 space-y-7"
             >
                 <div className="text-center">
-                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-gold/40 bg-ink mb-5">
-                        <Sparkles className="h-5 w-5 text-gold" />
-                    </span>
+                    <img
+                        src="/crluys-logo.png"
+                        alt="CrLuys Lifestyle"
+                        className="brand-logo-soft h-16 w-auto mx-auto mb-5"
+                        draggable={false}
+                    />
                     <p className="text-[11px] uppercase tracking-[0.5em] text-gold/85 mb-3">
                         Admin Access
                     </p>
