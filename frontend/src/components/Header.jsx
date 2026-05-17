@@ -58,20 +58,39 @@ export default function Header() {
                 </Link>
 
                 <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
-                    {NAV.map((n) => (
-                        <NavLink
-                            key={n.to}
-                            to={n.to}
-                            data-testid={`nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`}
-                            className={({ isActive }) =>
-                                `fancy-link text-[11px] xl:text-xs tracking-[0.25em] uppercase transition-colors whitespace-nowrap ${
-                                    isActive ? "text-gold" : "text-cream/70 hover:text-cream"
-                                }`
-                            }
-                        >
-                            {n.name}
-                        </NavLink>
-                    ))}
+                    {NAV.map((n) => {
+                        const testid = `nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`;
+                        if (n.external) {
+                            return (
+                                <a
+                                    key={n.to}
+                                    href={n.to}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid={testid}
+                                    className={`fancy-link text-[11px] xl:text-xs tracking-[0.25em] uppercase transition-colors whitespace-nowrap ${
+                                        n.featured ? "text-gold" : "text-cream/70 hover:text-cream"
+                                    }`}
+                                >
+                                    {n.name}
+                                </a>
+                            );
+                        }
+                        return (
+                            <NavLink
+                                key={n.to}
+                                to={n.to}
+                                data-testid={testid}
+                                className={({ isActive }) =>
+                                    `fancy-link text-[11px] xl:text-xs tracking-[0.25em] uppercase transition-colors whitespace-nowrap ${
+                                        isActive ? "text-gold" : "text-cream/70 hover:text-cream"
+                                    }`
+                                }
+                            >
+                                {n.name}
+                            </NavLink>
+                        );
+                    })}
                 </nav>
 
                 <div className="hidden lg:flex items-center gap-3">
