@@ -8,7 +8,6 @@ import {
     ShieldCheck,
     TrendingUp,
     Diamond,
-    Target,
     Compass,
     Users,
     LineChart,
@@ -16,7 +15,6 @@ import {
     Quote,
     Star,
     Check,
-    Mail,
     Loader2,
 } from "lucide-react";
 import {

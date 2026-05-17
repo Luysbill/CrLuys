@@ -69,12 +69,14 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
 - ✅ All 7 entry points covered
 
-## Brand Logo Integration (2026-05-17)
-- ✅ Official premium gold CrLuys Lifestyle logo extracted with proper alpha transparency from source artwork
-- ✅ Logo placed in: header (44–48px sticky nav, gold drop-shadow on hover), hero section (80px above headline, desktop only), footer (80–96px), admin login (64px), favicon (.png + .ico)
-- ✅ No "AI-generated" wordmark replacement — the original ornamental logo with crown + flourishes is preserved exactly
-- ✅ Clean transparent rendering on dark background, no visible black rectangle
-- ✅ Tested: 15/15 frontend regression ✅
+## Smart Investing Flagship Gateway (2026-05-17)
+- ✅ New internal `/smart-investing` flagship landing page — feels like the Keystone-dedicated experience inside the CrLuys ecosystem
+- ✅ Cinematic hero "Financial Freedom Changes Everything." with 4 stats grid, 5-star trust, dual CTAs
+- ✅ Sections: Inner Circle (4 pillars), How It Works (3 steps), Member Testimonials (3 cards w/ result chips), Inline Apply form (goal chips + email + name) → opens external Keystone in new tab via window.open after lead capture, FAQ (5 items), Final CTA strip
+- ✅ All Smart Investing entry points now navigate INTERNALLY to /smart-investing (header nav, hero pill with "Flagship" badge, hero CTA "Start Your Transformation", footer link with "Flagship" badge, mobile menu, FeaturedFinancialSection 3 CTAs, search results, /category/smart-investing redirect, /product/keystone-* redirect)
+- ✅ Only the CTAs ON the /smart-investing page open the lead-capture modal → external Keystone in new tab
+- ✅ Other 4 categories (Health, Fitness, Self Sufficiency, Mindset) untouched
+- ✅ Frontend tested by agent: 100% (24/24) ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
