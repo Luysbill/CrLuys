@@ -27,6 +27,11 @@ export default function ProductPage() {
         (async () => {
             try {
                 const { data } = await apiClient.get(`/products/${slug}`);
+                const cat = CATEGORIES.find((c) => c.slug === data.category);
+                if (cat?.external_url) {
+                    window.location.href = cat.external_url;
+                    return;
+                }
                 setProduct(data);
             } catch (err) {
                 setError("Product not found");

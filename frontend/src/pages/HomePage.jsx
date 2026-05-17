@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import CategorySection from "../components/CategorySection";
+import FeaturedFinancialSection from "../components/FeaturedFinancialSection";
 import NewsletterCTA from "../components/NewsletterCTA";
 import TestimonialGrid from "../components/TestimonialGrid";
 import { apiClient, CATEGORIES } from "../lib/api";
@@ -132,31 +133,41 @@ export default function HomePage() {
                             className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                             data-testid="search-results-grid"
                         >
-                            {searchResults.map((p) => (
-                                <a
-                                    key={p.id}
-                                    href={`/product/${p.slug}`}
-                                    className="group flex gap-4 p-4 bg-ink-100 border border-gold/15 rounded-2xl hover:border-gold/35 transition-colors"
-                                >
-                                    <img
-                                        src={p.image_url}
-                                        alt={p.title}
-                                        className="h-20 w-20 rounded-xl object-cover"
-                                    />
-                                    <div className="min-w-0">
-                                        <p className="text-[10px] uppercase tracking-[0.25em] text-gold/80">
-                                            {CATEGORIES.find((c) => c.slug === p.category)
-                                                ?.short}
-                                        </p>
-                                        <p className="font-serif text-lg text-cream leading-tight truncate">
-                                            {p.title}
-                                        </p>
-                                        <p className="text-sm text-gold mt-1">
-                                            ${p.price?.toFixed(2)}
-                                        </p>
-                                    </div>
-                                </a>
-                            ))}
+                            {searchResults.map((p) => {
+                                const cat = CATEGORIES.find((c) => c.slug === p.category);
+                                const external = cat?.external_url;
+                                const linkProps = external
+                                    ? {
+                                          href: external,
+                                          target: "_blank",
+                                          rel: "noopener noreferrer",
+                                      }
+                                    : { href: `/product/${p.slug}` };
+                                return (
+                                    <a
+                                        key={p.id}
+                                        {...linkProps}
+                                        className="group flex gap-4 p-4 bg-ink-100 border border-gold/15 rounded-2xl hover:border-gold/35 transition-colors"
+                                    >
+                                        <img
+                                            src={p.image_url}
+                                            alt={p.title}
+                                            className="h-20 w-20 rounded-xl object-cover"
+                                        />
+                                        <div className="min-w-0">
+                                            <p className="text-[10px] uppercase tracking-[0.25em] text-gold/80">
+                                                {cat?.short}
+                                            </p>
+                                            <p className="font-serif text-lg text-cream leading-tight truncate">
+                                                {p.title}
+                                            </p>
+                                            <p className="text-sm text-gold mt-1">
+                                                ${p.price?.toFixed(2)}
+                                            </p>
+                                        </div>
+                                    </a>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
@@ -164,14 +175,19 @@ export default function HomePage() {
 
             {!loading && (
                 <>
-                    {CATEGORIES.map((c, i) => (
-                        <CategorySection
-                            key={c.slug}
-                            category={c}
-                            products={grouped[c.slug] || []}
-                            reverse={i % 2 === 1}
-                        />
-                    ))}
+                    {CATEGORIES.map((c, i) => {
+                        if (c.featured_primary && c.external_url) {
+                            return <FeaturedFinancialSection key={c.slug} />;
+                        }
+                        return (
+                            <CategorySection
+                                key={c.slug}
+                                category={c}
+                                products={grouped[c.slug] || []}
+                                reverse={i % 2 === 1}
+                            />
+                        );
+                    })}
                 </>
             )}
 

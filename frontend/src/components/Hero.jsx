@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowRight, Star, ShieldCheck } from "lucide-react";
-import { HERO_IMAGE, CATEGORIES } from "../lib/api";
+import { HERO_IMAGE, CATEGORIES, SMART_INVESTING_EXTERNAL_URL } from "../lib/api";
 
 export default function Hero() {
     const scrollTo = (slug) => {
@@ -48,17 +48,18 @@ export default function Hero() {
                     </p>
 
                     <div className="mt-10 flex flex-wrap items-center gap-3">
-                        <button
-                            type="button"
+                        <a
+                            href={SMART_INVESTING_EXTERNAL_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             data-testid="hero-cta-start"
-                            onClick={() => scrollTo(CATEGORIES[0].slug)}
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] group"
                         >
                             <span className="text-sm uppercase tracking-[0.3em] font-medium">
                                 Start Your Transformation
                             </span>
                             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </a>
                         <a
                             href="#trust"
                             data-testid="hero-cta-trust"
@@ -92,22 +93,53 @@ export default function Hero() {
                         Five Pillars · Choose Yours
                     </p>
                     <div className="flex flex-wrap gap-3">
-                        {CATEGORIES.map((c) => (
-                            <button
-                                key={c.slug}
-                                type="button"
-                                data-testid={`hero-category-pill-${c.slug}`}
-                                onClick={() => scrollTo(c.slug)}
-                                className="group inline-flex items-center gap-3 px-5 py-3 rounded-full glass border border-gold/25 hover:border-gold transition-all duration-500 hover-glow"
-                            >
-                                <span className="text-[10px] font-serif italic text-gold/70 group-hover:text-gold">
-                                    {c.number}
-                                </span>
-                                <span className="text-sm tracking-wide text-cream group-hover:text-gold">
-                                    {c.short}
-                                </span>
-                            </button>
-                        ))}
+                        {CATEGORIES.map((c) => {
+                            const pillContent = (
+                                <>
+                                    <span className="text-[10px] font-serif italic text-gold/70 group-hover:text-gold">
+                                        {c.number}
+                                    </span>
+                                    <span className="text-sm tracking-wide text-cream group-hover:text-gold">
+                                        {c.short}
+                                    </span>
+                                    {c.featured_primary && (
+                                        <span className="ml-1 inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.25em] text-ink bg-gold rounded-full px-2 py-0.5 font-medium">
+                                            Featured
+                                        </span>
+                                    )}
+                                </>
+                            );
+                            const baseClass =
+                                "group inline-flex items-center gap-3 px-5 py-3 rounded-full glass border transition-all duration-500 hover-glow " +
+                                (c.featured_primary
+                                    ? "border-gold/70 hover:border-gold shadow-[0_0_18px_rgba(212,175,55,0.18)]"
+                                    : "border-gold/25 hover:border-gold");
+                            if (c.external_url) {
+                                return (
+                                    <a
+                                        key={c.slug}
+                                        href={c.external_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        data-testid={`hero-category-pill-${c.slug}`}
+                                        className={baseClass}
+                                    >
+                                        {pillContent}
+                                    </a>
+                                );
+                            }
+                            return (
+                                <button
+                                    key={c.slug}
+                                    type="button"
+                                    data-testid={`hero-category-pill-${c.slug}`}
+                                    onClick={() => scrollTo(c.slug)}
+                                    className={baseClass}
+                                >
+                                    {pillContent}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

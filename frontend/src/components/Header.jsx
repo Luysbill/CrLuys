@@ -6,7 +6,9 @@ import { CATEGORIES } from "../lib/api";
 const NAV = [
     ...CATEGORIES.map((c) => ({
         name: c.short,
-        to: `/category/${c.slug}`,
+        to: c.external_url || `/category/${c.slug}`,
+        external: Boolean(c.external_url),
+        featured: Boolean(c.featured_primary),
     })),
     { name: "Contact", to: "/contact" },
 ];
@@ -105,20 +107,39 @@ export default function Header() {
                     data-testid="mobile-menu"
                     className="lg:hidden mt-4 mx-4 rounded-2xl glass-strong border border-gold/20 p-6 flex flex-col gap-4 animate-fade-up"
                 >
-                    {NAV.map((n) => (
-                        <NavLink
-                            key={n.to}
-                            to={n.to}
-                            data-testid={`mobile-nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`}
-                            className={({ isActive }) =>
-                                `text-base tracking-wide ${
-                                    isActive ? "text-gold" : "text-cream/85"
-                                }`
-                            }
-                        >
-                            {n.name}
-                        </NavLink>
-                    ))}
+                    {NAV.map((n) => {
+                        const testid = `mobile-nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`;
+                        if (n.external) {
+                            return (
+                                <a
+                                    key={n.to}
+                                    href={n.to}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid={testid}
+                                    className={`text-base tracking-wide ${
+                                        n.featured ? "text-gold" : "text-cream/85"
+                                    }`}
+                                >
+                                    {n.name}
+                                </a>
+                            );
+                        }
+                        return (
+                            <NavLink
+                                key={n.to}
+                                to={n.to}
+                                data-testid={testid}
+                                className={({ isActive }) =>
+                                    `text-base tracking-wide ${
+                                        isActive ? "text-gold" : "text-cream/85"
+                                    }`
+                                }
+                            >
+                                {n.name}
+                            </NavLink>
+                        );
+                    })}
                     <Link
                         to="/admin/login"
                         data-testid="mobile-nav-admin"

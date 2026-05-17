@@ -24,6 +24,8 @@ export const tokenStore = {
     clear: () => localStorage.removeItem(TOKEN_KEY),
 };
 
+export const SMART_INVESTING_EXTERNAL_URL = "https://wealth-unlock-3.emergent.host/";
+
 export const CATEGORIES = [
     {
         slug: "smart-investing",
@@ -35,6 +37,8 @@ export const CATEGORIES = [
             "Curated tools, courses & strategies for financial freedom — from investing fundamentals to advanced wealth-building.",
         icon: "TrendingUp",
         accent: "from-amber-300/40 to-yellow-600/10",
+        external_url: SMART_INVESTING_EXTERNAL_URL,
+        featured_primary: true,
     },
     {
         slug: "health-wellness",

@@ -74,16 +74,31 @@ export default function CategorySection({ category, products, reverse = false })
                         <p className="text-cream/65 text-lg font-light leading-relaxed mb-8 max-w-xl">
                             {category.description}
                         </p>
-                        <Link
-                            to={`/category/${category.slug}`}
-                            data-testid={`category-cta-${category.slug}`}
-                            className="inline-flex items-center gap-3 px-7 py-4 rounded-full border border-gold/40 text-cream hover:text-ink hover:bg-gold transition-all duration-500 group"
-                        >
-                            <span className="text-sm uppercase tracking-[0.3em]">
-                                Open Collection
-                            </span>
-                            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        {category.external_url ? (
+                            <a
+                                href={category.external_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-testid={`category-cta-${category.slug}`}
+                                className="inline-flex items-center gap-3 px-7 py-4 rounded-full border border-gold/40 text-cream hover:text-ink hover:bg-gold transition-all duration-500 group"
+                            >
+                                <span className="text-sm uppercase tracking-[0.3em]">
+                                    Open Destination
+                                </span>
+                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            </a>
+                        ) : (
+                            <Link
+                                to={`/category/${category.slug}`}
+                                data-testid={`category-cta-${category.slug}`}
+                                className="inline-flex items-center gap-3 px-7 py-4 rounded-full border border-gold/40 text-cream hover:text-ink hover:bg-gold transition-all duration-500 group"
+                            >
+                                <span className="text-sm uppercase tracking-[0.3em]">
+                                    Open Collection
+                                </span>
+                                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        )}
                     </div>
                 </div>
 

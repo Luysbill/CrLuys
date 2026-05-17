@@ -1,0 +1,36 @@
+{
+  "summary": "Frontend testing for Smart Investing external integration. 14/15 acceptance criteria pass. One bug: Desktop header nav 'Smart Investing' is a react-router NavLink (anchor without target='_blank' / rel='noopener'); requirement asks for <a target='_blank'>. Mobile menu, hero pill, hero CTA, footer, featured section, search results, category external handoff and product redirect all working as specified. Backend /api/products?category=smart-investing returns 4 expected products.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Header.jsx (desktop nav)",
+        "issue": "data-testid='nav-smart-investing' is rendered via react-router NavLink. It renders as <a href='https://wealth-unlock-3.emergent.host/'> but WITHOUT target='_blank' and rel='noopener noreferrer'. Requirement explicitly: 'Header nav Smart Investing is an <a> with target=_blank to the external URL'. Clicking it would either cause a same-tab navigation or trigger react-router internal route attempt. Gold styling is present (isActive class kicks in because to is an absolute URL). Fix: in desktop nav map, branch on n.external like the mobile menu does — render a plain <a target='_blank' rel='noopener noreferrer'> for external items (keep data-testid). Should also force the gold class explicitly for n.featured so it stays gold regardless of active state.",
+        "selector": "[data-testid='nav-smart-investing']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix /app/frontend/src/components/Header.jsx desktop <nav>: when n.external, render <a href={n.to} target='_blank' rel='noopener noreferrer' data-testid={...}> instead of <NavLink>. Apply text-gold class when n.featured."
+  ],
+  "critical_code_review_comments": [
+    "Header.jsx desktop NAV uses NavLink for all entries — external URLs require <a target=_blank>. Mobile menu already handles this correctly; mirror that logic in desktop nav.",
+    "NavLink with absolute URL in 'to' relies on react-router internal behavior. Better to use plain <a> for external links to avoid hidden routing side effects.",
+    "Consider also adding gold styling explicitly to featured nav item (independent of isActive)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "93% (14/15)"},
+  "test_credentials": "Admin: admin@crluys.com / CrLuys2026! (not exercised this iteration — admin flow unchanged per request)",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Smart Investing external routing fully verified except desktop header nav target=_blank. All hero pills, hero CTA, footer link, FeaturedFinancialSection (id=category-smart-investing, 3 pillars, 4 stats, ENTER THE VAULT / WHY KEYSTONE / link strip), mobile nav, /category/smart-investing handoff page with auto-redirect logic in place, and search/filter results correctly open external URL in new tab. Backend API returns 4 smart-investing products (keystone-investors-club, the-billionaire-brainwave, ultimate-budget-planner, monetary-distribution-method). External URL: https://wealth-unlock-3.emergent.host/ — verified via href+target attributes only, never actually navigated to it.",
+  "rca of the issue": "Header.jsx line 60-75 maps NAV through <NavLink to={n.to}> for every item. When n.external is true (Smart Investing), the NavLink is rendered with the external URL as `to` but does NOT pass target/rel. The mobile menu code path (lines 110-127) already branches on n.external and renders a plain <a target='_blank' rel='noopener noreferrer'>. The desktop branch needs the same treatment. Reproduction: visit homepage on desktop, inspect [data-testid='nav-smart-investing'] — tag=A, href=correct, target='' (empty). Mitigation: replicate the mobile menu's external branch in the desktop NAV map."
+}

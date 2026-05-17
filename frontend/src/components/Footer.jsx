@@ -96,17 +96,34 @@ export default function Footer() {
                             Categories
                         </p>
                         <ul className="space-y-3">
-                            {CATEGORIES.map((c) => (
-                                <li key={c.slug}>
-                                    <Link
-                                        to={`/category/${c.slug}`}
-                                        className="text-cream/70 hover:text-gold transition-colors font-light"
-                                        data-testid={`footer-category-${c.slug}`}
-                                    >
-                                        {c.short}
-                                    </Link>
-                                </li>
-                            ))}
+                            {CATEGORIES.map((c) =>
+                                c.external_url ? (
+                                    <li key={c.slug}>
+                                        <a
+                                            href={c.external_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-gold hover:text-gold-light transition-colors font-light inline-flex items-center gap-2"
+                                            data-testid={`footer-category-${c.slug}`}
+                                        >
+                                            {c.short}
+                                            <span className="text-[9px] uppercase tracking-[0.25em] text-gold/70">
+                                                Featured
+                                            </span>
+                                        </a>
+                                    </li>
+                                ) : (
+                                    <li key={c.slug}>
+                                        <Link
+                                            to={`/category/${c.slug}`}
+                                            className="text-cream/70 hover:text-gold transition-colors font-light"
+                                            data-testid={`footer-category-${c.slug}`}
+                                        >
+                                            {c.short}
+                                        </Link>
+                                    </li>
+                                )
+                            )}
                         </ul>
                     </div>
 
