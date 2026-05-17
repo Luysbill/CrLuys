@@ -54,14 +54,23 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Frontend tested: 24/24 critical flows ✅
 
 ## Smart Investing External Integration (2026-05-17)
-- ✅ Smart Investing now wired directly to the external destination `https://wealth-unlock-3.emergent.host/` (Keystone Investors Club)
+- ✅ Smart Investing wired directly to the external destination `https://wealth-unlock-3.emergent.host/` (Keystone Investors Club)
 - ✅ Featured primary category: gold "FEATURED" badge on the hero pill + gold styling in header nav
-- ✅ Hero CTA "Start Your Transformation" opens external in new tab
-- ✅ Homepage Smart Investing slot uses the new FeaturedFinancialSection (cinematic): "Financial Freedom Changes Everything." headline, 3 pillars, 4 stats, "Enter the Vault" / "Why Keystone" CTAs + link strip — all opening external in new tab
-- ✅ `/category/smart-investing` shows a cinematic handoff page with auto-redirect (~1.8s) + manual "Enter Now" button
-- ✅ `/product/{any-smart-investing-slug}` auto-redirects to the external destination
-- ✅ Header nav, footer link, search results and mobile menu all open Smart Investing externally in new tab
-- ✅ Frontend re-tested: 15/15 ✅
+- ✅ Hero CTA "Start Your Transformation" + FeaturedFinancialSection ("Financial Freedom Changes Everything." + 3 pillars + 4 stats + 3 CTAs) all wired
+- ✅ `/category/smart-investing` shows cinematic handoff page; `/product/{smart-investing-slug}` triggers onboarding
+
+## Lead-Capture Onboarding (2026-05-17)
+- ✅ Premium luxury single-step modal between every Smart Investing CTA and Keystone destination
+- ✅ Headline: "What's your #1 financial goal?" with 5 elegant optional goal options (long-term wealth / private deals / financial freedom / smart diversification / legacy)
+- ✅ Optional name + required email · "Continue to Keystone" CTA
+- ✅ Cinematic dark/gold UI, smooth fade-up entry, ESC + backdrop + close button dismiss (form state only)
+- ✅ Confirm step "Welcome to the circle." → opens Keystone in NEW TAB via `window.open` after ~1.6s
+- ✅ Backend: `POST /api/leads` saves the lead AND idempotently upserts to subscribers list
+- ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
+- ✅ All 7 entry points covered: hero pill, hero CTA, header nav, mobile nav, footer link, featured primary/secondary CTAs, featured link strip, category page auto-open, product page auto-open, search result clicks
+- ✅ Other 4 categories untouched (still navigate to internal /category pages)
+- ✅ Backend tested: 39/39 ✅ (added 12 tests for /api/leads + /api/admin/leads)
+- ✅ Frontend tested: 100% ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
