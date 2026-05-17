@@ -3,6 +3,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/lib/auth";
+import { KeystoneOnboardingProvider } from "@/lib/keystone-onboarding";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HomePage from "@/pages/HomePage";
@@ -55,7 +56,9 @@ export default function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
-                <Shell />
+                <KeystoneOnboardingProvider>
+                    <Shell />
+                </KeystoneOnboardingProvider>
             </BrowserRouter>
         </AuthProvider>
     );

@@ -1,0 +1,42 @@
+{
+  "summary": "Tested Keystone lead-capture onboarding end-to-end. Backend: 39/39 tests pass (added /api/leads, /api/admin/leads create/list/delete + subscribers upsert). Frontend: Modal opens on 6 of 7 expected triggers (hero pill, hero CTA, desktop nav, featured primary, featured secondary, footer); auto-opens on /category/smart-investing and /product/keystone-investors-club; does NOT open on other 4 categories. Form submission posts to /api/leads, shows confirm step with 'Welcome to the circle.', calls window.open(externalUrl, '_blank'). ESC, close button, and backdrop all dismiss the modal in form state. BUG FOUND: featured-financial-link-strip is rendered as <a target='_blank' href={external_url}> and bypasses the modal — it should call openOnboarding().",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "FeaturedFinancialSection.jsx (link strip)",
+        "issue": "data-testid='featured-financial-link-strip' is an <a target='_blank' href={SMART_INVESTING_EXTERNAL_URL}> that navigates directly to the external URL, BYPASSING the onboarding modal. Per spec it must call openOnboarding() like the primary/secondary CTAs.",
+        "selector": "[data-testid='featured-financial-link-strip']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_leads.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    "/app/test_reports/pytest/leads_results.xml"
+  ],
+  "action_items": [
+    "Fix FeaturedFinancialSection link strip: change the outer <a href target=_blank> to a <button type='button' onClick={() => openOnboarding(SMART_INVESTING_EXTERNAL_URL, 'featured-financial-link-strip')}> so it triggers the lead capture modal like the other two CTAs in the same section.",
+    "Verify with a quick Playwright re-run on data-testid='featured-financial-link-strip' that the modal opens (instead of opening external in a new tab directly)."
+  ],
+  "critical_code_review_comments": [
+    "server.py POST /api/leads correctly upserts the subscriber idempotently (verified by test_lead_subscriber_upsert_idempotent — count==1).",
+    "server.py GET /api/admin/leads correctly excludes mongo _id via projection ({\"_id\": 0}). Good.",
+    "keystone-onboarding.jsx: window.open uses _blank/noopener,noreferrer (verified via spy — target='_blank', url contains 'wealth-unlock'). Good.",
+    "keystone-onboarding.jsx: phase-locked dismiss is correct — ESC and backdrop only fire when phase==='form', preventing dismiss during submitting/confirming. Good.",
+    "AdminDashboard.jsx: data-testid tab-leads, stat-leads, admin-leads all present (verified via grep). Mobile nav uses mobile-nav-smart-investing computed from name — present in code."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_leads.py (new — 12 tests for /api/leads + /api/admin/leads create/list/delete + subscriber upsert)"
+  ],
+  "success_rate": {"backend": "100% (39/39)", "frontend": "~92% (1 functional bug: link-strip bypasses modal)"},
+  "seed_data_creation": "Multiple TEST_ leads (TEST_lead_*, TEST_admin_*, TEST_subsync_*, TEST_idem_*, TEST_del_*) and a few playwright_* leads were created in the leads + subscribers collections. The delete test cleans up its own lead but the others remain (acceptable — admin UI shows them in the Leads tab).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Only one functional bug remains: FeaturedFinancialSection.jsx line ~207-223 renders the link strip as a real <a target='_blank' href={SMART_INVESTING_EXTERNAL_URL}>. The file already imports useKeystoneOnboarding so fix is trivial — replace the <a> with a <button type='button'> calling openOnboarding(SMART_INVESTING_EXTERNAL_URL, 'featured-financial-link-strip'). All other CTAs (hero pill, hero CTA, desktop nav, footer, featured primary, featured secondary, mobile nav, category page auto-open, product page auto-open) verified working. Backend test_leads.py covers POST /api/leads (200 + 422), GET /api/admin/leads (auth + content), subscriber upsert idempotency, DELETE /api/admin/leads/{id}. Window.open spy pattern used: page.add_init_script overwrites window.open and stores calls in window.__openCalls — works reliably for verifying external new-tab redirect without actually navigating.",
+  "rca of the issue": "RCA — FeaturedFinancialSection.jsx link strip: The author wired the two primary/secondary CTAs through openOnboarding() but forgot to migrate the standalone bottom link strip (kept as an <a target=_blank>). Reproduction: load home, scroll to 'Why Smart Investing With Keystone' section, click the rounded 'EXPLORE THE SMART INVESTING DESTINATION' bar at the bottom — it opens https://wealth-unlock-3.emergent.host/ in a new tab without showing the lead-capture modal. Mitigation: convert the <a> to a <button type='button' onClick={() => openOnboarding(SMART_INVESTING_EXTERNAL_URL, 'featured-financial-link-strip')}> so the modal captures the lead first, then the modal itself opens the external URL via window.open after confirm."
+}

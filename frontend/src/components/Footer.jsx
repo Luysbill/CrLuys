@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, Instagram, Youtube, Send } from "lucide-react";
 import { apiClient, formatApiErrorDetail, CATEGORIES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import { toast } from "sonner";
 
 export default function Footer() {
     const [email, setEmail] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const { openOnboarding } = useKeystoneOnboarding();
 
     const onSubscribe = async (e) => {
         e.preventDefault();
@@ -99,10 +101,14 @@ export default function Footer() {
                             {CATEGORIES.map((c) =>
                                 c.external_url ? (
                                     <li key={c.slug}>
-                                        <a
-                                            href={c.external_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                openOnboarding(
+                                                    c.external_url,
+                                                    `footer-${c.slug}`
+                                                )
+                                            }
                                             className="text-gold hover:text-gold-light transition-colors font-light inline-flex items-center gap-2"
                                             data-testid={`footer-category-${c.slug}`}
                                         >
@@ -110,7 +116,7 @@ export default function Footer() {
                                             <span className="text-[9px] uppercase tracking-[0.25em] text-gold/70">
                                                 Featured
                                             </span>
-                                        </a>
+                                        </button>
                                     </li>
                                 ) : (
                                     <li key={c.slug}>

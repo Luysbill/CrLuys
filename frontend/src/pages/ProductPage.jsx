@@ -12,6 +12,7 @@ import {
     ExternalLink,
 } from "lucide-react";
 import { apiClient, CATEGORIES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import TestimonialGrid from "../components/TestimonialGrid";
 import FAQAccordion from "../components/FAQAccordion";
 import NewsletterCTA from "../components/NewsletterCTA";
@@ -21,6 +22,7 @@ export default function ProductPage() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const { openOnboarding } = useKeystoneOnboarding();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -29,7 +31,9 @@ export default function ProductPage() {
                 const { data } = await apiClient.get(`/products/${slug}`);
                 const cat = CATEGORIES.find((c) => c.slug === data.category);
                 if (cat?.external_url) {
-                    window.location.href = cat.external_url;
+                    // Open the elegant onboarding instead of a hard redirect
+                    openOnboarding(cat.external_url, `product-page-${data.slug}`);
+                    setLoading(false);
                     return;
                 }
                 setProduct(data);
@@ -39,7 +43,7 @@ export default function ProductPage() {
                 setLoading(false);
             }
         })();
-    }, [slug]);
+    }, [slug, openOnboarding]);
 
     if (loading) {
         return (

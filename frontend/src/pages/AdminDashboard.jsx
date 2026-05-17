@@ -11,6 +11,7 @@ import {
     Sparkles,
     X,
     Save,
+    Target,
 } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { apiClient, CATEGORIES, formatApiErrorDetail } from "../lib/api";
@@ -301,6 +302,7 @@ export default function AdminDashboard() {
     const [products, setProducts] = useState([]);
     const [subs, setSubs] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [leads, setLeads] = useState([]);
     const [editing, setEditing] = useState(null);
     const [creating, setCreating] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -308,14 +310,16 @@ export default function AdminDashboard() {
     const fetchAll = async () => {
         setLoading(true);
         try {
-            const [p, s, m] = await Promise.all([
+            const [p, s, m, l] = await Promise.all([
                 apiClient.get("/admin/products"),
                 apiClient.get("/admin/subscribers"),
                 apiClient.get("/admin/messages"),
+                apiClient.get("/admin/leads"),
             ]);
             setProducts(p.data);
             setSubs(s.data);
             setMessages(m.data);
+            setLeads(l.data);
         } catch (err) {
             toast.error(formatApiErrorDetail(err.response?.data?.detail));
         } finally {
@@ -351,13 +355,9 @@ export default function AdminDashboard() {
 
     const stats = [
         { label: "Products", value: products.length, icon: Package },
+        { label: "Leads", value: leads.length, icon: Target },
         { label: "Subscribers", value: subs.length, icon: Users },
         { label: "Messages", value: messages.length, icon: Mail },
-        {
-            label: "Featured",
-            value: products.filter((p) => p.featured).length,
-            icon: Sparkles,
-        },
     ];
 
     return (
@@ -413,6 +413,7 @@ export default function AdminDashboard() {
                 <div className="flex items-center gap-2 mb-8 overflow-x-auto no-scrollbar">
                     {[
                         { key: "products", label: "Products" },
+                        { key: "leads", label: "Leads" },
                         { key: "subscribers", label: "Subscribers" },
                         { key: "messages", label: "Messages" },
                     ].map((t) => (
@@ -537,6 +538,58 @@ export default function AdminDashboard() {
                                                     </tr>
                                                 );
                                             })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                )}
+
+                {tab === "leads" && (
+                    <section data-testid="admin-leads" className="space-y-4">
+                        {leads.length === 0 ? (
+                            <p className="text-cream/55">No leads yet — onboarding modal will capture them.</p>
+                        ) : (
+                            <div className="bg-ink-100 border border-gold/15 rounded-2xl overflow-hidden">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="text-cream/55 uppercase tracking-[0.2em] text-xs border-b border-gold/15">
+                                            <tr>
+                                                <th className="p-4">Email</th>
+                                                <th className="p-4">Name</th>
+                                                <th className="p-4">Goal</th>
+                                                <th className="p-4">Source · CTA</th>
+                                                <th className="p-4">Captured</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {leads.map((l) => (
+                                                <tr
+                                                    key={l.id}
+                                                    className="border-b border-gold/10"
+                                                    data-testid={`lead-row-${l.id}`}
+                                                >
+                                                    <td className="p-4 text-cream">{l.email}</td>
+                                                    <td className="p-4 text-cream/70">{l.name || "—"}</td>
+                                                    <td className="p-4">
+                                                        {l.goal ? (
+                                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gold/15 text-gold text-[10px] uppercase tracking-[0.2em]">
+                                                                {l.goal.replace(/-/g, " ")}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-cream/40">—</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-4 text-cream/55 text-xs">
+                                                        <p className="uppercase tracking-[0.2em]">{l.source}</p>
+                                                        <p className="text-cream/40 mt-0.5">{l.cta || "—"}</p>
+                                                    </td>
+                                                    <td className="p-4 text-cream/55">
+                                                        {new Date(l.created_at).toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>

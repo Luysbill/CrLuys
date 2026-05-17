@@ -194,6 +194,14 @@ class ContactIn(BaseModel):
     message: str
 
 
+class LeadIn(BaseModel):
+    email: EmailStr
+    name: Optional[str] = ""
+    goal: Optional[str] = ""
+    source: Optional[str] = "smart-investing"
+    cta: Optional[str] = ""
+
+
 # ---------------- Slug util ----------------
 def slugify(text: str) -> str:
     text = text.lower().strip()
@@ -840,6 +848,30 @@ async def submit_contact(body: ContactIn):
     return {"ok": True, "message": "Message received. We'll get back to you shortly."}
 
 
+@api.post("/leads")
+async def submit_lead(body: LeadIn):
+    doc = {
+        "id": str(uuid.uuid4()),
+        "email": body.email.lower().strip(),
+        "name": (body.name or "").strip(),
+        "goal": (body.goal or "").strip(),
+        "source": (body.source or "smart-investing").strip(),
+        "cta": (body.cta or "").strip(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.leads.insert_one(doc)
+    # Also opportunistically add the email to the newsletter list
+    try:
+        await db.subscribers.update_one(
+            {"email": doc["email"]},
+            {"$setOnInsert": {"email": doc["email"], "created_at": doc["created_at"]}},
+            upsert=True,
+        )
+    except Exception:
+        pass
+    return {"ok": True, "message": "Welcome to the circle."}
+
+
 # ============================================================
 # ADMIN: PRODUCT CRUD
 # ============================================================
@@ -915,6 +947,20 @@ async def admin_list_subscribers(_: dict = Depends(get_current_admin)):
 async def admin_list_messages(_: dict = Depends(get_current_admin)):
     docs = await db.messages.find({}, {"_id": 0}).sort([("created_at", -1)]).to_list(2000)
     return docs
+
+
+@api.get("/admin/leads")
+async def admin_list_leads(_: dict = Depends(get_current_admin)):
+    docs = await db.leads.find({}, {"_id": 0}).sort([("created_at", -1)]).to_list(2000)
+    return docs
+
+
+@api.delete("/admin/leads/{lead_id}")
+async def admin_delete_lead(lead_id: str, _: dict = Depends(get_current_admin)):
+    result = await db.leads.delete_one({"id": lead_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    return {"ok": True}
 
 
 @api.delete("/admin/messages/{message_id}")

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X, Search, Sparkles } from "lucide-react";
 import { CATEGORIES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 
 const NAV = [
     ...CATEGORIES.map((c) => ({
@@ -17,6 +18,7 @@ export default function Header() {
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
+    const { openOnboarding } = useKeystoneOnboarding();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 30);
@@ -62,18 +64,17 @@ export default function Header() {
                         const testid = `nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`;
                         if (n.external) {
                             return (
-                                <a
+                                <button
                                     key={n.to}
-                                    href={n.to}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    type="button"
+                                    onClick={() => openOnboarding(n.to, `nav-${n.name}`)}
                                     data-testid={testid}
                                     className={`fancy-link text-[11px] xl:text-xs tracking-[0.25em] uppercase transition-colors whitespace-nowrap ${
                                         n.featured ? "text-gold" : "text-cream/70 hover:text-cream"
                                     }`}
                                 >
                                     {n.name}
-                                </a>
+                                </button>
                             );
                         }
                         return (
@@ -130,18 +131,19 @@ export default function Header() {
                         const testid = `mobile-nav-${n.name.replace(/\s+/g, "-").toLowerCase()}`;
                         if (n.external) {
                             return (
-                                <a
+                                <button
                                     key={n.to}
-                                    href={n.to}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    type="button"
+                                    onClick={() =>
+                                        openOnboarding(n.to, `mobile-nav-${n.name}`)
+                                    }
                                     data-testid={testid}
-                                    className={`text-base tracking-wide ${
+                                    className={`text-base tracking-wide text-left ${
                                         n.featured ? "text-gold" : "text-cream/85"
                                     }`}
                                 >
                                     {n.name}
-                                </a>
+                                </button>
                             );
                         }
                         return (

@@ -7,6 +7,7 @@ import FeaturedFinancialSection from "../components/FeaturedFinancialSection";
 import NewsletterCTA from "../components/NewsletterCTA";
 import TestimonialGrid from "../components/TestimonialGrid";
 import { apiClient, CATEGORIES } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import { Search } from "lucide-react";
 
 const HOME_TESTIMONIALS = [
@@ -39,6 +40,7 @@ export default function HomePage() {
     const [searchParams] = useSearchParams();
     const [query, setQuery] = useState("");
     const [filterCategory, setFilterCategory] = useState("");
+    const { openOnboarding } = useKeystoneOnboarding();
 
     useEffect(() => {
         (async () => {
@@ -136,17 +138,42 @@ export default function HomePage() {
                             {searchResults.map((p) => {
                                 const cat = CATEGORIES.find((c) => c.slug === p.category);
                                 const external = cat?.external_url;
-                                const linkProps = external
-                                    ? {
-                                          href: external,
-                                          target: "_blank",
-                                          rel: "noopener noreferrer",
-                                      }
-                                    : { href: `/product/${p.slug}` };
+                                if (external) {
+                                    return (
+                                        <button
+                                            key={p.id}
+                                            type="button"
+                                            onClick={() =>
+                                                openOnboarding(
+                                                    external,
+                                                    `search-result-${p.slug}`
+                                                )
+                                            }
+                                            className="group flex gap-4 p-4 bg-ink-100 border border-gold/15 rounded-2xl hover:border-gold/35 transition-colors text-left"
+                                        >
+                                            <img
+                                                src={p.image_url}
+                                                alt={p.title}
+                                                className="h-20 w-20 rounded-xl object-cover"
+                                            />
+                                            <div className="min-w-0">
+                                                <p className="text-[10px] uppercase tracking-[0.25em] text-gold/80">
+                                                    {cat?.short}
+                                                </p>
+                                                <p className="font-serif text-lg text-cream leading-tight truncate">
+                                                    {p.title}
+                                                </p>
+                                                <p className="text-sm text-gold mt-1">
+                                                    ${p.price?.toFixed(2)}
+                                                </p>
+                                            </div>
+                                        </button>
+                                    );
+                                }
                                 return (
                                     <a
                                         key={p.id}
-                                        {...linkProps}
+                                        href={`/product/${p.slug}`}
                                         className="group flex gap-4 p-4 bg-ink-100 border border-gold/15 rounded-2xl hover:border-gold/35 transition-colors"
                                     >
                                         <img
