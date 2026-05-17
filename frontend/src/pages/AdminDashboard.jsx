@@ -129,7 +129,7 @@ function ProductForm({ initial, onCancel, onSaved }) {
                         >
                             {CATEGORIES.map((c) => (
                                 <option key={c.slug} value={c.slug}>
-                                    {c.number} — {c.short}
+                                    {`${c.number} — ${c.short}`}
                                 </option>
                             ))}
                         </select>
