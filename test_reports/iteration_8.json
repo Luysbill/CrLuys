@@ -1,0 +1,33 @@
+{
+  "summary": "Frontend-only testing of Keystone integration as Smart Investing flagship internal landing /smart-investing. Found and fixed a CRITICAL homepage crash: FeaturedFinancialSection called useKeystoneOnboarding() without importing it (dead code from previous refactor) — caused 'useKeystoneOnboarding is not defined' ReferenceError that broke the entire homepage. After fix, all 24 acceptance criteria verified: SmartInvestingPage renders cinematically (hero, 4 stats, 4 pillars, 3 steps, 3 testimonials, inline form, FAQ, final CTA), all internal SPA Links (header nav, hero pill, hero CTA, footer w/ Flagship badge, mobile nav, FeaturedFinancialSection x3 CTAs) point to /smart-investing (no direct modal/external), redirects from /category/smart-investing and /product/keystone-investors-club work via <Navigate replace> / useNavigate, other 4 categories still load CategoryPage normally, inline-apply-form posts to /api/leads and opens external Keystone in new tab via window.open after confirmation, hero primary and final CTAs open keystone-onboarding modal. Mobile 390x844 renders all sections readably.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "FeaturedFinancialSection", "issue": "FIXED by testing agent — called useKeystoneOnboarding() without importing it, crashing the entire homepage with 'useKeystoneOnboarding is not defined' ReferenceError. Removed the unused destructure since all CTAs are now <Link> components. Main agent should verify the fix and consider running ESLint no-undef rule to catch this class of bug pre-deploy.", "selector": "[data-testid=\"featured-financial-section\"]", "priority": "CRITICAL"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/smart-investing desktop hero", "issues": ["Cinematic dark + gold premium aesthetic confirmed — serif headline, glassy cards, animated pulse dot, blurred gold radial gradients all rendering correctly"]},
+      {"screen": "/smart-investing mobile (390x844)", "issues": ["Hero, stats grid, pillars, steps, testimonials and inline-apply-form all visible and readable"]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "VERIFY fix to /app/frontend/src/components/FeaturedFinancialSection.jsx (removed orphan useKeystoneOnboarding call) — homepage was completely broken before this fix.",
+    "Consider enabling ESLint no-undef rule in CI to catch missing imports before they reach preview.",
+    "Note: featured-financial-secondary-cta href is '/smart-investing#how-it-works' (Link with hash anchor) — this is correct behavior (scrolls to How It Works on flagship page) but worth confirming with PM that hash-scroll is desired vs landing at top."
+  ],
+  "critical_code_review_comments": [
+    "FeaturedFinancialSection.jsx was missing import for useKeystoneOnboarding while still calling the hook — dead code from previous refactor that crashed the homepage in production preview.",
+    "SmartInvestingPage.jsx (659 lines) is approaching the 700-line threshold — consider extracting InlineApplyForm, STATS/PILLARS/METHOD/TESTIMONIALS/FAQ_ITEMS constants into separate files for maintainability.",
+    "Inline apply form's window.open relies on setTimeout 1100ms after async POST — could be flaky if popup blockers see it as non-user-initiated; consider calling window.open synchronously inside the click handler before the await."
+  ],
+  "updated_files": ["/app/frontend/src/components/FeaturedFinancialSection.jsx"],
+  "success_rate": {"backend": "not tested (frontend only)", "frontend": "100% after fix"},
+  "test_credentials": "Not used (no auth flows tested)",
+  "seed_data_creation": "Posted one TEST lead via inline form: email=test_si@example.com, name=Test User, goal=financial-freedom, source=smart-investing, cta=inline-apply-form",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All Smart Investing integration acceptance criteria pass after fixing FeaturedFinancialSection crash. Inline form POSTs to /api/leads correctly and window.open is invoked with https://wealth-unlock-3.emergent.host/. Hero primary CTA + Final CTA both open the keystone-onboarding modal (testid keystone-onboarding). Redirects (/category/smart-investing and /product/keystone-investors-club) both land on /smart-investing as expected. Other 4 categories load CategoryPage normally.",
+  "rca of the issue": "FeaturedFinancialSection.jsx line 42 had `const { openOnboarding } = useKeystoneOnboarding();` left over from a previous version where CTAs called the modal directly. During the refactor to internal SPA Links, the destructure line was not removed and the import for useKeystoneOnboarding was correctly dropped — leaving an undefined reference. The error only manifested when the component rendered (homepage), throwing ReferenceError and triggering the React error overlay, blanking the homepage. Mitigation applied: removed the dead line. Long-term: ESLint no-undef in CI."
+}

@@ -1,10 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Star, ShieldCheck } from "lucide-react";
-import { HERO_IMAGE, CATEGORIES, SMART_INVESTING_EXTERNAL_URL } from "../lib/api";
-import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
+import { HERO_IMAGE, CATEGORIES, SMART_INVESTING_INTERNAL_PATH } from "../lib/api";
 
 export default function Hero() {
-    const { openOnboarding } = useKeystoneOnboarding();
     const scrollTo = (slug) => {
         const el = document.getElementById(`category-${slug}`);
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -56,14 +55,8 @@ export default function Hero() {
                     </p>
 
                     <div className="mt-10 flex flex-wrap items-center gap-3">
-                        <button
-                            type="button"
-                            onClick={() =>
-                                openOnboarding(
-                                    SMART_INVESTING_EXTERNAL_URL,
-                                    "hero-start-your-transformation"
-                                )
-                            }
+                        <Link
+                            to={SMART_INVESTING_INTERNAL_PATH}
                             data-testid="hero-cta-start"
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] group"
                         >
@@ -71,7 +64,7 @@ export default function Hero() {
                                 Start Your Transformation
                             </span>
                             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </Link>
                         <a
                             href="#trust"
                             data-testid="hero-cta-trust"
@@ -116,7 +109,7 @@ export default function Hero() {
                                     </span>
                                     {c.featured_primary && (
                                         <span className="ml-1 inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.25em] text-ink bg-gold rounded-full px-2 py-0.5 font-medium">
-                                            Featured
+                                            Flagship
                                         </span>
                                     )}
                                 </>
@@ -126,22 +119,16 @@ export default function Hero() {
                                 (c.featured_primary
                                     ? "border-gold/70 hover:border-gold shadow-[0_0_18px_rgba(212,175,55,0.18)]"
                                     : "border-gold/25 hover:border-gold");
-                            if (c.external_url) {
+                            if (c.internal_path) {
                                 return (
-                                    <button
+                                    <Link
                                         key={c.slug}
-                                        type="button"
+                                        to={c.internal_path}
                                         data-testid={`hero-category-pill-${c.slug}`}
-                                        onClick={() =>
-                                            openOnboarding(
-                                                c.external_url,
-                                                `hero-pill-${c.slug}`
-                                            )
-                                        }
                                         className={baseClass}
                                     >
                                         {pillContent}
-                                    </button>
+                                    </Link>
                                 );
                             }
                             return (

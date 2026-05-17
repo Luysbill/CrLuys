@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
     ArrowRight,
     ArrowUpRight,
@@ -7,8 +8,10 @@ import {
     ShieldCheck,
     ChevronRight,
 } from "lucide-react";
-import { SMART_INVESTING_EXTERNAL_URL, CATEGORY_IMAGES } from "../lib/api";
-import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
+import {
+    SMART_INVESTING_INTERNAL_PATH,
+    CATEGORY_IMAGES,
+} from "../lib/api";
 
 const PILLARS = [
     {
@@ -36,7 +39,6 @@ const STATS = [
 ];
 
 export default function FeaturedFinancialSection() {
-    const { openOnboarding } = useKeystoneOnboarding();
     return (
         <section
             id="category-smart-investing"
@@ -139,14 +141,8 @@ export default function FeaturedFinancialSection() {
                                     of your wealth.
                                 </p>
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            openOnboarding(
-                                                SMART_INVESTING_EXTERNAL_URL,
-                                                "featured-enter-the-vault"
-                                            )
-                                        }
+                                    <Link
+                                        to={SMART_INVESTING_INTERNAL_PATH}
                                         data-testid="featured-financial-primary-cta"
                                         className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] group"
                                     >
@@ -154,15 +150,9 @@ export default function FeaturedFinancialSection() {
                                             Enter The Vault
                                         </span>
                                         <ArrowUpRight className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            openOnboarding(
-                                                SMART_INVESTING_EXTERNAL_URL + "#why",
-                                                "featured-why-keystone"
-                                            )
-                                        }
+                                    </Link>
+                                    <Link
+                                        to={SMART_INVESTING_INTERNAL_PATH + "#how-it-works"}
                                         data-testid="featured-financial-secondary-cta"
                                         className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-gold/40 text-cream hover:text-gold hover:border-gold transition-colors"
                                     >
@@ -170,7 +160,7 @@ export default function FeaturedFinancialSection() {
                                         <span className="text-sm uppercase tracking-[0.3em]">
                                             Why Keystone
                                         </span>
-                                    </button>
+                                    </Link>
                                 </div>
                                 <p className="text-xs text-cream/45 mt-5">
                                     Application reviewed within 48 hours · Strictly
@@ -203,20 +193,14 @@ export default function FeaturedFinancialSection() {
                     </div>
                 </div>
 
-                {/* External link strip */}
-                <button
-                    type="button"
-                    onClick={() =>
-                        openOnboarding(
-                            SMART_INVESTING_EXTERNAL_URL,
-                            "featured-link-strip"
-                        )
-                    }
+                {/* Internal link strip → flagship */}
+                <Link
+                    to={SMART_INVESTING_INTERNAL_PATH}
                     data-testid="featured-financial-link-strip"
                     className="group mt-14 w-full flex items-center justify-between bg-ink-50/60 border border-gold/20 rounded-full px-7 py-4 hover:border-gold transition-colors text-left"
                 >
                     <span className="text-cream/80 text-sm tracking-[0.2em] uppercase">
-                        Explore the Smart Investing destination
+                        Explore the Smart Investing flagship destination
                     </span>
                     <span className="inline-flex items-center gap-2 text-gold">
                         <span className="text-sm uppercase tracking-[0.3em] font-medium">
@@ -224,7 +208,7 @@ export default function FeaturedFinancialSection() {
                         </span>
                         <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
-                </button>
+                </Link>
             </div>
         </section>
     );

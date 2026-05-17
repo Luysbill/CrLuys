@@ -201,3 +201,10 @@ html {
 .brand-logo-soft {
     filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.18));
 }
+.brand-icon {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.55));
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+.brand-icon:hover {
+    filter: drop-shadow(0 6px 18px rgba(212, 175, 55, 0.45));
+}

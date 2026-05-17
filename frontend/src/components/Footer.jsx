@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Youtube, Send } from "lucide-react";
 import { apiClient, formatApiErrorDetail, CATEGORIES } from "../lib/api";
-import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 import { toast } from "sonner";
 
 export default function Footer() {
     const [email, setEmail] = useState("");
     const [submitting, setSubmitting] = useState(false);
-    const { openOnboarding } = useKeystoneOnboarding();
 
     const onSubscribe = async (e) => {
         e.preventDefault();
@@ -93,38 +91,29 @@ export default function Footer() {
                             Categories
                         </p>
                         <ul className="space-y-3">
-                            {CATEGORIES.map((c) =>
-                                c.external_url ? (
-                                    <li key={c.slug}>
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                openOnboarding(
-                                                    c.external_url,
-                                                    `footer-${c.slug}`
-                                                )
-                                            }
-                                            className="text-gold hover:text-gold-light transition-colors font-light inline-flex items-center gap-2"
-                                            data-testid={`footer-category-${c.slug}`}
-                                        >
-                                            {c.short}
-                                            <span className="text-[9px] uppercase tracking-[0.25em] text-gold/70">
-                                                Featured
-                                            </span>
-                                        </button>
-                                    </li>
-                                ) : (
+                            {CATEGORIES.map((c) => {
+                                const to = c.internal_path || `/category/${c.slug}`;
+                                return (
                                     <li key={c.slug}>
                                         <Link
-                                            to={`/category/${c.slug}`}
-                                            className="text-cream/70 hover:text-gold transition-colors font-light"
+                                            to={to}
                                             data-testid={`footer-category-${c.slug}`}
+                                            className={`transition-colors font-light inline-flex items-center gap-2 ${
+                                                c.featured_primary
+                                                    ? "text-gold hover:text-gold-light"
+                                                    : "text-cream/70 hover:text-gold"
+                                            }`}
                                         >
                                             {c.short}
+                                            {c.featured_primary && (
+                                                <span className="text-[9px] uppercase tracking-[0.25em] text-gold/70">
+                                                    Flagship
+                                                </span>
+                                            )}
                                         </Link>
                                     </li>
-                                )
-                            )}
+                                );
+                            })}
                         </ul>
                     </div>
 
