@@ -67,10 +67,14 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Confirm step "Welcome to the circle." → opens Keystone in NEW TAB via `window.open` after ~1.6s
 - ✅ Backend: `POST /api/leads` saves the lead AND idempotently upserts to subscribers list
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
-- ✅ All 7 entry points covered: hero pill, hero CTA, header nav, mobile nav, footer link, featured primary/secondary CTAs, featured link strip, category page auto-open, product page auto-open, search result clicks
-- ✅ Other 4 categories untouched (still navigate to internal /category pages)
-- ✅ Backend tested: 39/39 ✅ (added 12 tests for /api/leads + /api/admin/leads)
-- ✅ Frontend tested: 100% ✅
+- ✅ All 7 entry points covered
+
+## Brand Logo Integration (2026-05-17)
+- ✅ Official premium gold CrLuys Lifestyle logo extracted with proper alpha transparency from source artwork
+- ✅ Logo placed in: header (44–48px sticky nav, gold drop-shadow on hover), hero section (80px above headline, desktop only), footer (80–96px), admin login (64px), favicon (.png + .ico)
+- ✅ No "AI-generated" wordmark replacement — the original ornamental logo with crown + flourishes is preserved exactly
+- ✅ Clean transparent rendering on dark background, no visible black rectangle
+- ✅ Tested: 15/15 frontend regression ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
