@@ -204,12 +204,16 @@ export default function FeaturedFinancialSection() {
                 </div>
 
                 {/* External link strip */}
-                <a
-                    href={SMART_INVESTING_EXTERNAL_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <button
+                    type="button"
+                    onClick={() =>
+                        openOnboarding(
+                            SMART_INVESTING_EXTERNAL_URL,
+                            "featured-link-strip"
+                        )
+                    }
                     data-testid="featured-financial-link-strip"
-                    className="group mt-14 flex items-center justify-between bg-ink-50/60 border border-gold/20 rounded-full px-7 py-4 hover:border-gold transition-colors"
+                    className="group mt-14 w-full flex items-center justify-between bg-ink-50/60 border border-gold/20 rounded-full px-7 py-4 hover:border-gold transition-colors text-left"
                 >
                     <span className="text-cream/80 text-sm tracking-[0.2em] uppercase">
                         Explore the Smart Investing destination
@@ -220,7 +224,7 @@ export default function FeaturedFinancialSection() {
                         </span>
                         <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
-                </a>
+                </button>
             </div>
         </section>
     );
