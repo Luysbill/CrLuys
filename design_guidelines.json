@@ -1,0 +1,108 @@
+{
+  "theme": "dark",
+  "archetype": "Archetype 5 (Jewel & Luxury)",
+  "color_palette": {
+    "backgrounds": {
+      "main": "#0A0908",
+      "surface": "#141311",
+      "surface_elevated": "#1E1C1A",
+      "glass": "rgba(20, 19, 17, 0.7)"
+    },
+    "accents": {
+      "primary": "#D4AF37",
+      "primary_hover": "#F3E5AB",
+      "primary_glow": "rgba(212, 175, 55, 0.25)",
+      "secondary": "#8B7355",
+      "success": "#2E4A35"
+    },
+    "text": {
+      "primary": "#F8F6F0",
+      "secondary": "#A8A39D",
+      "muted": "#757069",
+      "inverse": "#0A0908"
+    },
+    "borders": {
+      "subtle": "rgba(212, 175, 55, 0.15)",
+      "strong": "rgba(212, 175, 55, 0.4)"
+    }
+  },
+  "typography": {
+    "heading_font": "Cormorant Garamond",
+    "body_font": "Outfit",
+    "scales": {
+      "h1": "text-5xl md:text-7xl tracking-tighter leading-none font-light",
+      "h2": "text-4xl md:text-5xl tracking-tight leading-tight font-light",
+      "h3": "text-2xl md:text-3xl tracking-tight leading-snug font-normal",
+      "h4": "text-xl font-medium tracking-wide uppercase",
+      "body_lg": "text-lg md:text-xl leading-relaxed font-light",
+      "body": "text-base leading-relaxed font-light",
+      "small": "text-sm tracking-wider uppercase opacity-80"
+    }
+  },
+  "spacing_scale": {
+    "section_y": "py-24 md:py-32",
+    "section_x": "px-6 md:px-12 lg:px-24",
+    "component_gap": "gap-8 md:gap-12",
+    "card_padding": "p-8 md:p-10"
+  },
+  "layouts": {
+    "hero": {
+      "description": "Cinematic full-screen hero section.",
+      "structure": "Image covering full viewport with fixed attachment. Gradient overlay 'bg-gradient-to-r from-black/80 via-black/50 to-transparent'. Massive H1 heading left aligned.",
+      "cta_pills": "5 elegant pill buttons representing categories. Flex-wrap or horizontal scroll. Glassmorphic background 'bg-white/5 backdrop-blur-md', 1px gold border 'border-primary/30'. Must smooth-scroll directly to corresponding category section ID."
+    },
+    "category_section": {
+      "description": "Alternating asymmetrical layouts per category.",
+      "order": [
+        "01 Smart Investing",
+        "02 Health Home Doctor & Wellness",
+        "03 Fitness & Nutrition",
+        "04 Self Sufficiency",
+        "05 Mindset & Balance"
+      ],
+      "structure": "Large background numbering (e.g., '01') in extremely large faint text 'text-[15vw] text-white/5 font-serif absolute'. One prominent lifestyle image corresponding to the category alongside a bento grid of curated product cards."
+    },
+    "product_card": {
+      "style": "Premium landing page feel. 'bg-[#141311] border border-[#D4AF37]/20'. Soft gold glow on hover 'hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-500'. Image top, content bottom. Primary gold CTA button."
+    },
+    "product_landing_page": {
+      "structure": "Split screen hero with sticky product image on one side, scrolling details on the other. High-contrast typography. Sections: The Benefit, Testimonial/Video, FAQ Accordion, Sticky Add-to-Cart at bottom."
+    },
+    "testimonial": {
+      "style": "Massive serif quotation marks. Grid of minimal cards with user avatars. Quote in 'text-primary' high contrast, author in muted gold."
+    },
+    "faq": {
+      "style": "Minimalist accordion. No background per item. Bottom borders only 'border-b border-[#D4AF37]/20'. Elegant plus/minus toggle icons."
+    },
+    "footer": {
+      "style": "Expansive spacing 'py-32'. Massive serif brand slogan at top. 4-column link structure. Clean single-line newsletter input with bottom border only."
+    },
+    "admin_dashboard": {
+      "style": "Swiss-inspired dark mode. Dense bento grid stats. Sidebar nav. Focus on CRUD logic clarity. Uses same dark/gold palette but less dramatic lighting (flatter surfaces for readability)."
+    }
+  },
+  "motion_guidelines": {
+    "hover": "Smooth transform-gpu duration-500 ease-out. Slight scale up (1.02) and subtle gold box-shadow glow.",
+    "scroll": "Smooth momentum scrolling. Fade-in and translate-up on scroll.",
+    "page_transition": "Simple calm fade-in."
+  },
+  "media": {
+    "hero_couple": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/fa324654c60b2de799f373d28b71d56192ccab6b031388ff49911082c13a47fa.png",
+    "smart_investing": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/649ab03e30d1470eb799b19beb6984b87d48fc3da081a3c3dc954711304c465a.png",
+    "health_wellness": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/d36f208df3a3d007b5a2ec36b7f548f60369488a7a6d33638d5187476cbae61d.png",
+    "fitness_nutrition": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/9c1a831a26cce4f2bf72b18dd636bdcf9bedfc2f5f67e69d05df8e2104ace1c9.png",
+    "self_sufficiency": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/4137e014cc04c6e520118e218e3a3a5e4e008210319e49218ee3b5e8eed58697.png",
+    "mindset_balance": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/c34970b1d5e06c56297adbadcfecac0a69a2660e3e20c8b279943e60735d1b92.png",
+    "premium_texture_bg": "https://static.prod-images.emergentagent.com/jobs/bf67ecea-fe54-413e-aee9-b3d228eff2a1/images/46b52d8b2618db0c242b77e955d907507db5d04e132284265b38db92dcbf75fd.png"
+  },
+  "instructions_to_main_agent": [
+    "Use standard Tailwind CSS classes mapping to the color variables in this file.",
+    "MUST use 'Cormorant Garamond' for headings and 'Outfit' for body text. Add these via Google Fonts (or similar) in your layout setup.",
+    "Do not use generic UI cards. Implement the specific glassmorphism and subtle gold borders (1px solid rgba(212,175,55,0.2)) to preserve the luxury vibe.",
+    "Ensure all interactive and informational elements have data-testid attributes (kebab-case, role-based) for testing.",
+    "The project uses .js/.jsx files (not TypeScript/tsx). Apply these guidelines to standard React Javascript files.",
+    "Ensure hero section category CTA pills navigate cleanly to their corresponding distinct sections via smooth scrolling anchor links.",
+    "Products must have detailed landing pages (value props, FAQ, benefits) rather than generic simple ecommerce cards when clicked.",
+    "Admin dashboard must be a fully functional dark-mode UI focused on CRUD for products, subscribers, and messages."
+  ]
+}
