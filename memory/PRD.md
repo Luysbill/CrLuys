@@ -69,15 +69,24 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
 - ✅ All 7 entry points covered
 
-## Smart Investing → Keystone Cinematic Handoff (2026-05-17, Option B)
-- ✅ Rolled back the internal `/smart-investing` flagship page — the **real external Keystone** (`https://wealth-unlock-3.emergent.host/`) is the dedicated landing page, as the user explicitly requested
-- ✅ Every Smart Investing CTA (hero pill with "Flagship" badge, hero CTA "Start Your Transformation", header & mobile nav with gold styling, footer link with "Flagship" badge, FeaturedFinancialSection 3 CTAs, search results) opens the premium **lead-capture modal**
-- ✅ After email submission, the modal transitions to a **CINEMATIC FULL-SCREEN BRAND HANDOFF** (z-[120]): CrLuys gold ornamental logo + "Financial Freedom Changes Everything." + "Opening Keystone…" spinner — then opens external Keystone in NEW TAB via `window.open` after ~2.2s
-- ✅ `/category/smart-investing` shows a cinematic handoff page with auto-open of the modal after ~500ms
-- ✅ `/product/keystone-investors-club` auto-opens the modal
-- ✅ Other 4 categories continue to work normally with internal /category routes
-- ✅ Lead capture preserved (leads land in Admin → Leads tab) — no automated email sequences yet, per user instruction
-- ✅ Frontend tested by agent: 25/25 ✅ (testing agent caught a stale-import regression in Hero.jsx after rollback and auto-fixed it). Backend untouched (39/39 still ✅).
+## Strategic Top Picks (2026-05-17, Pinterest analytics)
+- ✅ Added `priority_order` field to product schema; idempotent startup migration backfills all docs with `999` and sets 1-8 on the 8 strategic priority products
+- ✅ Renamed `Ultimate Energizer Guide` → `Ultimate Home Energy Guide` to match the source spreadsheet
+- ✅ Backend: `GET /api/products?top_picks=true` returns the 8 priority products sorted ASC by `priority_order`
+- ✅ New homepage section **TopPicksSection** (between Search and FeaturedFinancialSection):
+  - Header: "The eight that changed lifestyles."
+  - Tag: "Strategic Top Picks · Curated by engagement · Pinterest analytics"
+  - 8 priority cards in exact order:
+    1. **Keystone Investors Club** (flagship, gold badge, spans 2 columns, opens lead-capture modal → cinematic transition → external Keystone)
+    2. The Complete Skin Reset System
+    3. Ultimate Budget Planner (also Smart Investing, opens modal)
+    4. No Grid Survival Projects
+    5. Emergency Home Doctor
+    6. Ultimate Home Energy Guide
+    7. His Secret Obsession
+    8. Mega Fitness Bundle
+- ✅ Cards #2, #4–#8 navigate to their internal product landing pages; cards #1, #3 (Smart Investing) open the modal handoff
+- ✅ Backend tested: 35/36 ✅ (1 minor issue caught & fixed with migration backfill). Frontend: 100% ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`

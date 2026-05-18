@@ -758,6 +758,11 @@ async def migrate_priority_products():
     """Idempotent migration to set priority_order on existing seeded products
     based on the strategic order driven by Pinterest engagement analytics."""
     now = datetime.now(timezone.utc)
+    # Backfill default priority_order on any legacy doc missing the field
+    await db.products.update_many(
+        {"priority_order": {"$exists": False}},
+        {"$set": {"priority_order": 999}},
+    )
     for p in PRIORITY_PRODUCTS:
         result = await db.products.update_one(
             {"slug": p["slug"]},
