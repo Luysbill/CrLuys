@@ -69,14 +69,15 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
 - ✅ All 7 entry points covered
 
-## Smart Investing Flagship Gateway (2026-05-17)
-- ✅ New internal `/smart-investing` flagship landing page — feels like the Keystone-dedicated experience inside the CrLuys ecosystem
-- ✅ Cinematic hero "Financial Freedom Changes Everything." with 4 stats grid, 5-star trust, dual CTAs
-- ✅ Sections: Inner Circle (4 pillars), How It Works (3 steps), Member Testimonials (3 cards w/ result chips), Inline Apply form (goal chips + email + name) → opens external Keystone in new tab via window.open after lead capture, FAQ (5 items), Final CTA strip
-- ✅ All Smart Investing entry points now navigate INTERNALLY to /smart-investing (header nav, hero pill with "Flagship" badge, hero CTA "Start Your Transformation", footer link with "Flagship" badge, mobile menu, FeaturedFinancialSection 3 CTAs, search results, /category/smart-investing redirect, /product/keystone-* redirect)
-- ✅ Only the CTAs ON the /smart-investing page open the lead-capture modal → external Keystone in new tab
-- ✅ Other 4 categories (Health, Fitness, Self Sufficiency, Mindset) untouched
-- ✅ Frontend tested by agent: 100% (24/24) ✅
+## Smart Investing → Keystone Cinematic Handoff (2026-05-17, Option B)
+- ✅ Rolled back the internal `/smart-investing` flagship page — the **real external Keystone** (`https://wealth-unlock-3.emergent.host/`) is the dedicated landing page, as the user explicitly requested
+- ✅ Every Smart Investing CTA (hero pill with "Flagship" badge, hero CTA "Start Your Transformation", header & mobile nav with gold styling, footer link with "Flagship" badge, FeaturedFinancialSection 3 CTAs, search results) opens the premium **lead-capture modal**
+- ✅ After email submission, the modal transitions to a **CINEMATIC FULL-SCREEN BRAND HANDOFF** (z-[120]): CrLuys gold ornamental logo + "Financial Freedom Changes Everything." + "Opening Keystone…" spinner — then opens external Keystone in NEW TAB via `window.open` after ~2.2s
+- ✅ `/category/smart-investing` shows a cinematic handoff page with auto-open of the modal after ~500ms
+- ✅ `/product/keystone-investors-club` auto-opens the modal
+- ✅ Other 4 categories continue to work normally with internal /category routes
+- ✅ Lead capture preserved (leads land in Admin → Leads tab) — no automated email sequences yet, per user instruction
+- ✅ Frontend tested by agent: 25/25 ✅ (testing agent caught a stale-import regression in Hero.jsx after rollback and auto-fixed it). Backend untouched (39/39 still ✅).
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
