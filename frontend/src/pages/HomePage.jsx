@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import CategorySection from "../components/CategorySection";
 import FeaturedFinancialSection from "../components/FeaturedFinancialSection";
+import TopPicksSection from "../components/TopPicksSection";
 import NewsletterCTA from "../components/NewsletterCTA";
 import TestimonialGrid from "../components/TestimonialGrid";
 import { apiClient, CATEGORIES } from "../lib/api";
@@ -67,6 +68,12 @@ export default function HomePage() {
             if (map[p.category]) map[p.category].push(p);
         }
         return map;
+    }, [products]);
+
+    const topPicks = useMemo(() => {
+        return [...products]
+            .filter((p) => p.priority_order && p.priority_order < 999)
+            .sort((a, b) => a.priority_order - b.priority_order);
     }, [products]);
 
     const searchResults = useMemo(() => {
@@ -198,6 +205,10 @@ export default function HomePage() {
                     )}
                 </div>
             </section>
+
+            {!loading && topPicks.length > 0 && (
+                <TopPicksSection products={topPicks} />
+            )}
 
             {!loading && (
                 <>

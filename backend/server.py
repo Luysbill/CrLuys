@@ -148,6 +148,7 @@ class ProductBase(BaseModel):
     start_here: bool = False
     is_active: bool = True
     order: int = 0
+    priority_order: int = 999  # 1-8 = curated strategic top picks (lower = higher rank); 999 = not in priority list
 
 
 class ProductCreate(ProductBase):
@@ -176,6 +177,7 @@ class ProductUpdate(BaseModel):
     start_here: Optional[bool] = None
     is_active: Optional[bool] = None
     order: Optional[int] = None
+    priority_order: Optional[int] = None
 
 
 class ProductOut(ProductBase):
@@ -686,6 +688,19 @@ DEFAULT_FAQ = [
     {"question": "Will it work for me?", "answer": "These resources are designed to support a wide range of lifestyles. We curate only the products with proven results and high user satisfaction."},
 ]
 
+# Strategic priority order driven by Pinterest engagement analytics (lower = higher rank).
+# These are the curated "Top Picks" displayed on the homepage in this exact order.
+PRIORITY_PRODUCTS = [
+    {"slug": "keystone-investors-club", "priority_order": 1, "title": "Keystone Investors Club"},
+    {"slug": "complete-skin-reset-system", "priority_order": 2, "title": "The Complete Skin Reset System"},
+    {"slug": "ultimate-budget-planner", "priority_order": 3, "title": "Ultimate Budget Planner"},
+    {"slug": "no-grid-survival-projects", "priority_order": 4, "title": "No Grid Survival Projects"},
+    {"slug": "emergency-home-doctor", "priority_order": 5, "title": "Emergency Home Doctor"},
+    {"slug": "ultimate-energizer-guide", "priority_order": 6, "title": "Ultimate Home Energy Guide"},
+    {"slug": "his-secret-obsession", "priority_order": 7, "title": "His Secret Obsession"},
+    {"slug": "mega-fitness-bundle", "priority_order": 8, "title": "Mega Fitness Bundle"},
+]
+
 
 async def seed_admin():
     admin_email = os.environ.get("ADMIN_EMAIL", "admin@crluys.com")
@@ -711,6 +726,8 @@ async def seed_admin():
 async def seed_products():
     count = await db.products.count_documents({})
     if count > 0:
+        # Run priority + naming migration even if products exist (idempotent)
+        await migrate_priority_products()
         return
     now = datetime.now(timezone.utc)
     docs = []
@@ -728,11 +745,32 @@ async def seed_products():
         doc.setdefault("start_here", False)
         doc.setdefault("is_active", True)
         doc.setdefault("order", 999)
+        doc.setdefault("priority_order", 999)
         doc["created_at"] = now
         doc["updated_at"] = now
         docs.append(doc)
     await db.products.insert_many(docs)
     logger.info(f"Seeded {len(docs)} products")
+    await migrate_priority_products()
+
+
+async def migrate_priority_products():
+    """Idempotent migration to set priority_order on existing seeded products
+    based on the strategic order driven by Pinterest engagement analytics."""
+    now = datetime.now(timezone.utc)
+    for p in PRIORITY_PRODUCTS:
+        result = await db.products.update_one(
+            {"slug": p["slug"]},
+            {
+                "$set": {
+                    "priority_order": p["priority_order"],
+                    "title": p["title"],
+                    "updated_at": now,
+                }
+            },
+        )
+        if result.matched_count == 0:
+            logger.warning(f"Priority product not found in DB: {p['slug']}")
 
 
 @app.on_event("startup")
@@ -792,19 +830,23 @@ async def list_products(
     category: Optional[str] = Query(default=None),
     q: Optional[str] = Query(default=None),
     featured: Optional[bool] = Query(default=None),
+    top_picks: Optional[bool] = Query(default=None),
 ):
     query: dict = {"is_active": True}
     if category and category in CATEGORY_SLUGS:
         query["category"] = category
     if featured is not None:
         query["featured"] = featured
+    if top_picks:
+        query["priority_order"] = {"$lt": 999}
     if q:
         query["$or"] = [
             {"title": {"$regex": q, "$options": "i"}},
             {"short_description": {"$regex": q, "$options": "i"}},
             {"headline": {"$regex": q, "$options": "i"}},
         ]
-    docs = await db.products.find(query).sort([("order", 1), ("created_at", -1)]).to_list(500)
+    sort_order = [("priority_order", 1), ("order", 1), ("created_at", -1)] if top_picks else [("order", 1), ("created_at", -1)]
+    docs = await db.products.find(query).sort(sort_order).to_list(500)
     return [product_to_out(d) for d in docs]
 
 

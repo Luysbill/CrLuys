@@ -1,0 +1,61 @@
+{
+  "summary": "Strategic Top Picks feature fully tested (backend + frontend). Backend: 35/36 pytest tests passed — 1 minor issue: admin /api/admin/products response omits `priority_order` for non-priority products that were seeded before the field was added. Top Picks API contract (top_picks=true, sorting 1..8, category filter, renamed 'Ultimate Home Energy Guide', total products still 20, priority_order persistence on create/update) all verified. Frontend: 100% — top-picks-section renders between search and FeaturedFinancialSection, all 8 cards with correct ranks #1-#8, Keystone #1 is a BUTTON with FLAGSHIP badge + md:col-span-2 + opens lead-capture modal, Ultimate Budget Planner #3 also opens modal, other 6 cards are <a> Links to /product/{slug}, full lead flow Keystone-click→modal→email→cinematic transition→window.open(external,_blank) works. Mobile (390x844): all 8 cards stack 1-column.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "GET /api/admin/products",
+        "issue": "`priority_order` field is missing from response for products that don't have it in MongoDB (the 12 non-top-pick products seeded before the field was introduced). ProductBase model defaults to 999 but product_to_out() returns raw Mongo doc without applying Pydantic defaults. Public GET /api/products has the same root cause but is invisible because the top-picks list only ever shows the 8 documents that DO have the field. Recommendation: either (a) backfill on seed_products()/migration loop ($set priority_order:999 on all docs missing it), or (b) use ProductOut(**doc) so Pydantic defaults fill in missing fields."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "validated_flows": [
+    "GET /api/products?top_picks=true => 8 docs sorted by priority_order ASC, titles match priority list, includes renamed 'Ultimate Home Energy Guide' and excludes old name 'Ultimate Energizer Guide'",
+    "GET /api/products (no filter) returns 20 products",
+    "GET /api/products?top_picks=true&category=smart-investing returns [Keystone (1), Ultimate Budget Planner (3)] in that order",
+    "POST /api/admin/products with priority_order=5 persists; PUT /api/admin/products/{id} updates to 2 and is reflected in admin listing",
+    "Migration idempotency: two consecutive top-picks GETs return identical (priority_order, slug) signatures with [1..8]",
+    "Admin login (admin@crluys.com / CrLuys2026!) works; admin endpoints reachable",
+    "Homepage section ordering: Hero -> TrustBar -> Search -> TopPicksSection (Y≈4348) -> FeaturedFinancialSection (Y≈6371) -> remaining categories -> Testimonials -> Newsletter -> Footer",
+    "TopPicksSection has data-testid='top-picks-section', H2 'The eight that changed lifestyles.', tag 'Strategic Top Picks · Curated by engagement', Pinterest analytics subtitle",
+    "All 8 cards rendered with data-testid='top-pick-{slug}' and rank text '#1'..'#8' in serif gold",
+    "Card #1 Keystone: <button>, has 'Flagship' badge, has md:col-span-2 class, click opens [data-testid='keystone-onboarding'] modal (no navigation)",
+    "Card #3 Ultimate Budget Planner: <button>, click opens same modal",
+    "Cards #2,#4,#5,#6,#7,#8: <a> Links navigating to /product/{slug} (verified by clicking #4 -> URL changed to /product/no-grid-survival-projects)",
+    "Card #6 title is 'Ultimate Home Energy Guide' (renamed)",
+    "Mobile 390x844: all 8 cards rendered at width=342 (single column), vertically stacked (delta-Y > 30 between #1 and #2)",
+    "Lead flow: click Keystone -> modal -> fill email -> submit -> [data-testid='keystone-cinematic-transition'] overlay appears -> window.open('https://wealth-unlock-3.emergent.host/', '_blank') fires"
+  ],
+  "minor_observations": [
+    "Same harmless behaviour as iteration 9: instrumented window.open captures one extra call with url=null prior to the correct external_url+_blank call. Visually correct.",
+    "H2 visual text contains a <br> between 'that' and 'changed lifestyles.' — matches design intent; full text 'The eight that changed lifestyles.' is intact."
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_top_picks.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_iteration10.xml"
+  ],
+  "action_items": [
+    "(Minor) Backfill `priority_order: 999` on the 12 non-priority products already in Mongo, OR change product_to_out to apply Pydantic defaults so the field is always returned. Not blocking — frontend uses priority_order only for the 8 top picks (which already have it)."
+  ],
+  "critical_code_review_comments": [
+    "ProductBase defines priority_order with default 999 but product_to_out() returns raw Mongo docs (line 215-222 of server.py) without applying defaults. This leads to the admin response asymmetry above. Long-term safer to serialize via `ProductOut(**doc).model_dump()`.",
+    "migrate_priority_products only $sets priority_order on the 8 PRIORITY_PRODUCTS slugs. Consider an additional $set priority_order=999 on db.products.update_many({priority_order: {$exists: false}}, ...) for full idempotency across legacy seeds.",
+    "PriorityCard in TopPicksSection.jsx decides modal-vs-link based on `CATEGORIES.find(c => c.slug === product.category)?.external_url`. This currently works because only the 'smart-investing' category has external_url. If a future product in that category needs to navigate normally, this coupling will be surprising — consider checking product.external_url directly instead."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_top_picks.py (new file: top picks + priority_order tests)"
+  ],
+  "success_rate": {"backend": "97% (35/36)", "frontend": "100%"},
+  "test_credentials": "admin@crluys.com / CrLuys2026! (verified working)",
+  "seed_data_creation": "Created 1 transient TEST_ admin product during create/update/delete priority_order test (cleaned up). One newsletter and one contact-form record per backend test run (existing pattern).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Top picks regression suite lives at /app/backend/tests/test_top_picks.py. Run with: pytest /app/backend/tests/test_top_picks.py /app/backend/tests/backend_test.py -v. Frontend Top Picks selectors: [data-testid='top-picks-section'] for the section, [data-testid='top-pick-{slug}'] for each card. Keystone (#1) and Ultimate Budget Planner (#3) are <button>s that open [data-testid='keystone-onboarding']; the other 6 cards are <a> Links. Lead flow ends with window.open('https://wealth-unlock-3.emergent.host/', '_blank').",
+  "rca of the issue": "Single backend minor: priority_order missing in admin /api/admin/products responses for products whose Mongo doc lacks the field. Root cause: seed_products only applies setdefault('priority_order', 999) at initial insertion; for an already-seeded DB, migrate_priority_products only updates the 8 strategic slugs. product_to_out() returns the raw doc (server.py:215) so the field is omitted entirely from JSON for the 12 leftover products. Repro: GET /api/admin/products with admin token -> inspect 'The Encyclopedia of Power Foods' -> no priority_order key. Mitigation: in migrate_priority_products, also run db.products.update_many({'priority_order': {'$exists': False}}, {'$set': {'priority_order': 999}}). Not blocking the feature."
+}
