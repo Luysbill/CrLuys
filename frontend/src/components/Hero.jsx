@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, ShieldCheck } from "lucide-react";
-import { HERO_IMAGE, CATEGORIES, SMART_INVESTING_INTERNAL_PATH } from "../lib/api";
+import { HERO_IMAGE, CATEGORIES, SMART_INVESTING_EXTERNAL_URL } from "../lib/api";
+import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
 
 export default function Hero() {
+    const { openOnboarding } = useKeystoneOnboarding();
     const scrollTo = (slug) => {
         const el = document.getElementById(`category-${slug}`);
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
