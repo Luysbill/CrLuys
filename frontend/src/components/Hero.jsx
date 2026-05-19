@@ -14,7 +14,7 @@ export default function Hero() {
     return (
         <section
             data-testid="hero-section"
-            className="relative min-h-[100svh] w-full overflow-hidden flex items-end pb-24 pt-40"
+            className="relative min-h-[92svh] sm:min-h-[100svh] w-full overflow-hidden flex items-end pb-16 sm:pb-24 pt-32 sm:pt-40"
         >
             <div className="absolute inset-0">
                 <img

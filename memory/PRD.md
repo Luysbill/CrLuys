@@ -69,24 +69,13 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
 - ✅ All 7 entry points covered
 
-## Strategic Top Picks (2026-05-17, Pinterest analytics)
-- ✅ Added `priority_order` field to product schema; idempotent startup migration backfills all docs with `999` and sets 1-8 on the 8 strategic priority products
-- ✅ Renamed `Ultimate Energizer Guide` → `Ultimate Home Energy Guide` to match the source spreadsheet
-- ✅ Backend: `GET /api/products?top_picks=true` returns the 8 priority products sorted ASC by `priority_order`
-- ✅ New homepage section **TopPicksSection** (between Search and FeaturedFinancialSection):
-  - Header: "The eight that changed lifestyles."
-  - Tag: "Strategic Top Picks · Curated by engagement · Pinterest analytics"
-  - 8 priority cards in exact order:
-    1. **Keystone Investors Club** (flagship, gold badge, spans 2 columns, opens lead-capture modal → cinematic transition → external Keystone)
-    2. The Complete Skin Reset System
-    3. Ultimate Budget Planner (also Smart Investing, opens modal)
-    4. No Grid Survival Projects
-    5. Emergency Home Doctor
-    6. Ultimate Home Energy Guide
-    7. His Secret Obsession
-    8. Mega Fitness Bundle
-- ✅ Cards #2, #4–#8 navigate to their internal product landing pages; cards #1, #3 (Smart Investing) open the modal handoff
-- ✅ Backend tested: 35/36 ✅ (1 minor issue caught & fixed with migration backfill). Frontend: 100% ✅
+## Polish & Optimization Pass (2026-05-17)
+- ✅ **Admin Login fully scrubbed of dev artifacts** — removed visible seeded credentials ("Default seeded: admin@crluys.com · CrLuys2026!"), removed pre-filled email, replaced "ADMIN ACCESS" with "PRIVATE VAULT", added subtle "Encrypted access · CrLuys private vault" footer line, premium gold-glow focus states on inputs, `vault@crluys.com` placeholder, active:scale click feedback on Sign In
+- ✅ **Mobile spacing tightened** — Hero `min-h-[92svh] sm:min-h-[100svh] pb-16 sm:pb-24 pt-32 sm:pt-40`; sections reduced from `py-28` to `py-20` on mobile across Hero, CategorySection, TopPicksSection, FeaturedFinancialSection, NewsletterCTA, Footer, TrustBar, TestimonialGrid, FAQAccordion, search section. Headlines scale down on small screens.
+- ✅ **Micro-interactions** — `active:scale-[0.97]` click feedback added to hero CTAs and lead modal submit; gold-glow focus shadows on lead-modal inputs; subtle `prefers-reduced-motion` support; thumb-friendly tap targets
+- ✅ **Realism** — Admin Leads empty-state refined: "No leads captured yet."; `autoComplete` attrs added to onboarding modal inputs for proper browser UX
+- ✅ **Performance** — Reduced-motion media query honors user accessibility prefs; added `useReveal` IntersectionObserver hook + `.reveal` CSS utility (ready for future on-scroll fade reveals)
+- ✅ **Lint clean** ✅; **frontend tested**: 16/16 polish items pass on desktop AND mobile ✅; **backend unchanged** ✅
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
