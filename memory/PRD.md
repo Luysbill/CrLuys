@@ -69,13 +69,13 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ Admin: new "Leads" tab + "Leads" stat card showing email, name, goal, source/cta, captured-at
 - ✅ All 7 entry points covered
 
-## Polish & Optimization Pass (2026-05-17)
-- ✅ **Admin Login fully scrubbed of dev artifacts** — removed visible seeded credentials ("Default seeded: admin@crluys.com · CrLuys2026!"), removed pre-filled email, replaced "ADMIN ACCESS" with "PRIVATE VAULT", added subtle "Encrypted access · CrLuys private vault" footer line, premium gold-glow focus states on inputs, `vault@crluys.com` placeholder, active:scale click feedback on Sign In
-- ✅ **Mobile spacing tightened** — Hero `min-h-[92svh] sm:min-h-[100svh] pb-16 sm:pb-24 pt-32 sm:pt-40`; sections reduced from `py-28` to `py-20` on mobile across Hero, CategorySection, TopPicksSection, FeaturedFinancialSection, NewsletterCTA, Footer, TrustBar, TestimonialGrid, FAQAccordion, search section. Headlines scale down on small screens.
-- ✅ **Micro-interactions** — `active:scale-[0.97]` click feedback added to hero CTAs and lead modal submit; gold-glow focus shadows on lead-modal inputs; subtle `prefers-reduced-motion` support; thumb-friendly tap targets
-- ✅ **Realism** — Admin Leads empty-state refined: "No leads captured yet."; `autoComplete` attrs added to onboarding modal inputs for proper browser UX
-- ✅ **Performance** — Reduced-motion media query honors user accessibility prefs; added `useReveal` IntersectionObserver hook + `.reveal` CSS utility (ready for future on-scroll fade reveals)
-- ✅ **Lint clean** ✅; **frontend tested**: 16/16 polish items pass on desktop AND mobile ✅; **backend unchanged** ✅
+## Final Luxury Refinement (2026-05-17, deployment-ready)
+- ✅ **All placeholder affiliate URLs scrubbed**: backend seed default is `""`; idempotent migration on every startup strips any legacy `example.com/...` URLs from existing docs. All 20 products now have empty `affiliate_url` awaiting admin to fill in real partner links.
+- ✅ **Graceful CTA fallback**: ProductPage shows an elegant "Available Soon" badge with `Lock` icon when `affiliate_url` is empty (in all 3 CTA locations on the page), instead of broken links. Subtitle copy adapts: "We're finalising secure access. Subscribe to be the first to know." When admin sets a real URL via Admin → Products, the page automatically switches to the standard "Get Instant Access" external CTA.
+- ✅ **DiscoveryRibbon** added between Top Picks and Featured Financial sections: a slow editorial 60-second marquee of 5 category mood-images, "Five worlds, one philosophy." headline, fade-edged gradient overlays, pauses on hover, respects `prefers-reduced-motion`. Subtle and quiet — not Pinterest-spam.
+- ✅ **Soft scroll fade-up** on CategorySections via the new `useReveal` IntersectionObserver hook + `.reveal` CSS class.
+- ✅ **No dev artifacts visible**: confirmed zero references to seeded credentials, no demo strings, no debug text anywhere in user-facing surface.
+- ✅ **Backend tested 7/7 pytest** + **frontend 15/15 review items** all green, including idempotent restart cycle.
 
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
