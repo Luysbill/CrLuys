@@ -77,6 +77,20 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ **No dev artifacts visible**: confirmed zero references to seeded credentials, no demo strings, no debug text anywhere in user-facing surface.
 - ✅ **Backend tested 7/7 pytest** + **frontend 15/15 review items** all green, including idempotent restart cycle.
 
+## Admin Dashboard Polish — Production Affiliate Workflow (2026-05-19, iteration 13)
+- ✅ **New "Affiliate links" stat card** (e.g. `0/20`) at the top of the dashboard — instant visibility into how many products are revenue-ready.
+- ✅ **Affiliate-URL status column** with three states: gold "Flagship" pill (Keystone, auto-redirected via modal), green "✓ Linked" pill, red "Not set" pill.
+- ✅ **Inline Quick-Edit Affiliate URL**: link icon → input → Enter to save, Esc to cancel. No full-modal needed for the most frequent action.
+- ✅ **Test affiliate link** button next to each linked URL (opens in new tab via `target=_blank rel=noopener`).
+- ✅ **View public page** button per row → opens `/product/{slug}` in a new tab for instant preview.
+- ✅ **Search + Category + Affiliate filter** bar with live result count ("Showing X of Y") and an empty-state with "Clear filters".
+- ✅ **Top Pick Rank field** (`priority_order`) now exposed in the full edit modal (1–8 = strategic top picks; 999 = off).
+- ✅ **Admin product list sort**: backend now returns products by `priority_order ASC, category ASC, order ASC` so the strategic top 8 always surface first.
+- ✅ **URL validation** (`http://` / `https://` only) in both the modal and quick-edit, with inline green "✓ Valid" / red "Must start with https" badges.
+- ✅ **Flagship guard**: changing `keystone-investors-club`'s affiliate URL fires a `window.confirm` dialog warning that the cinematic lead-capture modal flow will be overridden.
+- ✅ **Mobile responsive**: filter bar wraps gracefully; products table is horizontally scrollable.
+- ✅ **Backend pytest 3/3** (`/app/backend/tests/test_iter13_admin_polish.py`) + **frontend 24/24** admin polish review items all green.
+
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
 - Password: `CrLuys2026!`
@@ -85,9 +99,11 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 ## Prioritized Backlog
 ### P0 (delivered)
 - Homepage, 5 categories, product pages, admin CRUD, newsletter, contact, auth
+- Admin dashboard polish: quick-edit affiliate URL, filters, status pills, flagship guard, URL validation (iter 13)
 
 ### P1 (next)
-- Replace placeholder affiliate URLs (admin can edit each product to set the real partner URL)
+- Plug in real affiliate URLs via Admin → Products (now smooth via inline quick-edit)
+- Email automation for captured leads (Resend / SendGrid welcome + nurture sequence)
 - Optional: stronger SEO (Open Graph tags per product, sitemap.xml)
 - Optional: rate-limit on newsletter & contact endpoints
 
@@ -95,10 +111,13 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - Stripe checkout for first-party digital products
 - Multi-language (EN/ES) toggle
 - Brute-force lockout on `/api/auth/login` (5 failed = 15 min)
-- Email integration for "new subscriber" + "new message" notifications (Resend / SendGrid)
+- Analytics integration (Plausible / GA) for affiliate-CTR tracking
+- Blog / content section for SEO traffic
+- Wishlist / favorites
+- Product reviews & ratings
 
 ## Next Tasks (suggested)
-- Plug in real affiliate URLs via Admin → Products → Edit
-- Optional: add Stripe-based premium membership tier
-- Optional: integrate Resend for transactional emails
-- Optional: connect to analytics for conversion tracking on affiliate clicks
+- Plug in real affiliate URLs via Admin → Products → inline link icon (or full edit)
+- Email automation (welcome + nurture) for Smart Investing leads
+- Add analytics on affiliate-link clicks for conversion tracking
+- Optional: Stripe-based premium membership tier
