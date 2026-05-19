@@ -929,7 +929,7 @@ async def submit_lead(body: LeadIn):
 # ============================================================
 @api.get("/admin/products")
 async def admin_list_products(_: dict = Depends(get_current_admin)):
-    docs = await db.products.find({}).sort([("category", 1), ("order", 1)]).to_list(1000)
+    docs = await db.products.find({}).sort([("priority_order", 1), ("category", 1), ("order", 1)]).to_list(1000)
     return [product_to_out(d) for d in docs]
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     LogOut,
@@ -8,13 +8,27 @@ import {
     Users,
     Mail,
     Package,
-    Sparkles,
     X,
     Save,
     Target,
+    Link2,
+    LinkIcon,
+    ExternalLink,
+    Eye,
+    Check,
+    AlertTriangle,
+    Search,
+    Star,
+    Crown,
 } from "lucide-react";
 import { useAuth } from "../lib/auth";
-import { apiClient, CATEGORIES, formatApiErrorDetail } from "../lib/api";
+import {
+    apiClient,
+    CATEGORIES,
+    formatApiErrorDetail,
+    isValidHttpUrl,
+    SMART_INVESTING_FLAGSHIP_SLUG,
+} from "../lib/api";
 import { toast } from "sonner";
 
 const EMPTY_PRODUCT = {
@@ -34,8 +48,14 @@ const EMPTY_PRODUCT = {
     start_here: false,
     is_active: true,
     order: 0,
+    priority_order: 999,
 };
 
+const FLAGSHIP_WARNING = `Heads-up: "${SMART_INVESTING_FLAGSHIP_SLUG}" is the Smart Investing flagship and is already wired to the cinematic lead-capture modal → Keystone destination. Setting a custom affiliate URL here will override that flow. Continue?`;
+
+// ============================================================
+// PRODUCT FORM (full edit modal)
+// ============================================================
 function ProductForm({ initial, onCancel, onSaved }) {
     const [form, setForm] = useState({
         ...EMPTY_PRODUCT,
@@ -52,13 +72,33 @@ function ProductForm({ initial, onCancel, onSaved }) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+
+        // URL validation
+        const url = (form.affiliate_url || "").trim();
+        if (url && !isValidHttpUrl(url)) {
+            toast.error("Affiliate URL must start with http:// or https://");
+            return;
+        }
+
+        // Flagship confirmation
+        if (
+            isEdit &&
+            initial?.slug === SMART_INVESTING_FLAGSHIP_SLUG &&
+            url &&
+            url !== (initial?.affiliate_url || "")
+        ) {
+            if (!window.confirm(FLAGSHIP_WARNING)) return;
+        }
+
         setSaving(true);
         const payload = {
             ...form,
+            affiliate_url: url,
             price: parseFloat(form.price) || 0,
             rating: parseFloat(form.rating) || 4.9,
             reviews_count: parseInt(form.reviews_count) || 0,
             order: parseInt(form.order) || 0,
+            priority_order: parseInt(form.priority_order) || 999,
             benefits: form.benefits_text
                 .split("\n")
                 .map((s) => s.trim())
@@ -84,6 +124,9 @@ function ProductForm({ initial, onCancel, onSaved }) {
             setSaving(false);
         }
     };
+
+    const affiliateInvalid =
+        form.affiliate_url && !isValidHttpUrl(form.affiliate_url);
 
     return (
         <div
@@ -176,12 +219,32 @@ function ProductForm({ initial, onCancel, onSaved }) {
                     value={form.image_url}
                     onChange={onChange}
                 />
-                <Field
-                    label="Affiliate URL"
-                    name="affiliate_url"
-                    value={form.affiliate_url}
-                    onChange={onChange}
-                />
+
+                <div>
+                    <label className="text-xs uppercase tracking-[0.25em] text-cream/60 mb-2 block flex items-center gap-2">
+                        Affiliate URL
+                        {form.affiliate_url && !affiliateInvalid && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 text-[10px] normal-case tracking-normal">
+                                <Check className="h-3 w-3" /> Valid
+                            </span>
+                        )}
+                        {affiliateInvalid && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 text-[10px] normal-case tracking-normal">
+                                <AlertTriangle className="h-3 w-3" /> Must start with https://
+                            </span>
+                        )}
+                    </label>
+                    <input
+                        name="affiliate_url"
+                        value={form.affiliate_url}
+                        onChange={onChange}
+                        placeholder="https://partner.example.com/?aff=YOUR_ID"
+                        data-testid="form-affiliate_url"
+                        className={`w-full bg-ink-50 border text-cream rounded-xl px-3 py-2.5 font-light outline-none focus:border-gold ${
+                            affiliateInvalid ? "border-red-500/60" : "border-gold/25"
+                        }`}
+                    />
+                </div>
 
                 <div>
                     <label className="text-xs uppercase tracking-[0.25em] text-cream/60 mb-2 block">
@@ -218,6 +281,13 @@ function ProductForm({ initial, onCancel, onSaved }) {
                         name="order"
                         type="number"
                         value={form.order}
+                        onChange={onChange}
+                    />
+                    <Field
+                        label="Top Pick Rank (1–8, 999=off)"
+                        name="priority_order"
+                        type="number"
+                        value={form.priority_order}
                         onChange={onChange}
                     />
                 </div>
@@ -295,6 +365,163 @@ const Toggle = ({ label, name, checked, onChange }) => (
     </label>
 );
 
+// ============================================================
+// QUICK-EDIT AFFILIATE URL (inline row editor)
+// ============================================================
+function QuickEditAffiliate({ product, onSaved }) {
+    const [editing, setEditing] = useState(false);
+    const [value, setValue] = useState(product.affiliate_url || "");
+    const [saving, setSaving] = useState(false);
+    const isFlagship = product.slug === SMART_INVESTING_FLAGSHIP_SLUG;
+    const hasUrl = Boolean((product.affiliate_url || "").trim());
+
+    useEffect(() => {
+        setValue(product.affiliate_url || "");
+    }, [product.affiliate_url]);
+
+    const cancel = () => {
+        setValue(product.affiliate_url || "");
+        setEditing(false);
+    };
+
+    const save = async () => {
+        const url = value.trim();
+        if (url && !isValidHttpUrl(url)) {
+            toast.error("URL must start with http:// or https://");
+            return;
+        }
+        if (
+            isFlagship &&
+            url &&
+            url !== (product.affiliate_url || "") &&
+            !window.confirm(FLAGSHIP_WARNING)
+        ) {
+            return;
+        }
+        setSaving(true);
+        try {
+            const { data } = await apiClient.put(`/admin/products/${product.id}`, {
+                affiliate_url: url,
+            });
+            toast.success(url ? "Affiliate URL saved" : "Affiliate URL cleared");
+            onSaved(data);
+            setEditing(false);
+        } catch (err) {
+            toast.error(formatApiErrorDetail(err.response?.data?.detail));
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const onKey = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            save();
+        } else if (e.key === "Escape") {
+            cancel();
+        }
+    };
+
+    if (editing) {
+        return (
+            <div
+                className="flex items-center gap-2 min-w-[260px]"
+                data-testid={`quick-edit-affiliate-${product.slug}`}
+            >
+                <input
+                    autoFocus
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={onKey}
+                    placeholder="https://partner.example.com/?aff=YOUR_ID"
+                    data-testid={`quick-edit-input-${product.slug}`}
+                    className="flex-1 bg-ink-50 border border-gold/40 text-cream rounded-lg px-2.5 py-1.5 text-xs font-light outline-none focus:border-gold"
+                />
+                <button
+                    type="button"
+                    onClick={save}
+                    disabled={saving}
+                    data-testid={`quick-save-${product.slug}`}
+                    className="h-8 w-8 inline-flex items-center justify-center rounded-full bg-gold text-ink hover:bg-gold-light transition-colors disabled:opacity-50"
+                    title="Save (Enter)"
+                >
+                    <Check className="h-3.5 w-3.5" />
+                </button>
+                <button
+                    type="button"
+                    onClick={cancel}
+                    data-testid={`quick-cancel-${product.slug}`}
+                    className="h-8 w-8 inline-flex items-center justify-center rounded-full border border-gold/30 text-cream hover:text-gold transition-colors"
+                    title="Cancel (Esc)"
+                >
+                    <X className="h-3.5 w-3.5" />
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex items-center gap-2 min-w-[200px]">
+            {hasUrl ? (
+                <>
+                    <span
+                        data-testid={`affiliate-status-${product.slug}`}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-[10px] uppercase tracking-[0.2em]"
+                    >
+                        <Check className="h-3 w-3" /> Linked
+                    </span>
+                    <a
+                        href={product.affiliate_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-testid={`test-affiliate-${product.slug}`}
+                        className="h-7 w-7 inline-flex items-center justify-center rounded-full border border-gold/30 text-cream hover:bg-gold hover:text-ink transition-colors"
+                        title="Test affiliate link"
+                    >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                </>
+            ) : (
+                <span
+                    data-testid={`affiliate-status-${product.slug}`}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] uppercase tracking-[0.2em] ${
+                        isFlagship
+                            ? "bg-gold/15 text-gold"
+                            : "bg-red-500/15 text-red-300"
+                    }`}
+                    title={
+                        isFlagship
+                            ? "Flagship — auto-redirects via cinematic modal to Keystone"
+                            : "No affiliate URL yet — paste one to enable the public CTA"
+                    }
+                >
+                    {isFlagship ? (
+                        <>
+                            <Crown className="h-3 w-3" /> Flagship
+                        </>
+                    ) : (
+                        <>
+                            <AlertTriangle className="h-3 w-3" /> Not set
+                        </>
+                    )}
+                </span>
+            )}
+            <button
+                type="button"
+                onClick={() => setEditing(true)}
+                data-testid={`quick-edit-${product.slug}`}
+                className="h-7 w-7 inline-flex items-center justify-center rounded-full border border-gold/30 text-cream hover:bg-gold hover:text-ink transition-colors"
+                title="Quick-edit affiliate URL"
+            >
+                <LinkIcon className="h-3.5 w-3.5" />
+            </button>
+        </div>
+    );
+}
+
+// ============================================================
+// MAIN ADMIN DASHBOARD
+// ============================================================
 export default function AdminDashboard() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -306,6 +533,11 @@ export default function AdminDashboard() {
     const [editing, setEditing] = useState(null);
     const [creating, setCreating] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    // Filters
+    const [query, setQuery] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState("all");
+    const [affiliateFilter, setAffiliateFilter] = useState("all"); // all | linked | not-set
 
     const fetchAll = async () => {
         setLoading(true);
@@ -353,8 +585,38 @@ export default function AdminDashboard() {
         setCreating(false);
     };
 
+    // Client-side sort + filter
+    const visibleProducts = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        const arr = products
+            .filter((p) => {
+                if (categoryFilter !== "all" && p.category !== categoryFilter) return false;
+                if (affiliateFilter === "linked" && !(p.affiliate_url || "").trim()) return false;
+                if (affiliateFilter === "not-set" && (p.affiliate_url || "").trim()) return false;
+                if (!q) return true;
+                return (
+                    p.title?.toLowerCase().includes(q) ||
+                    p.slug?.toLowerCase().includes(q)
+                );
+            })
+            .sort((a, b) => {
+                const pa = a.priority_order ?? 999;
+                const pb = b.priority_order ?? 999;
+                if (pa !== pb) return pa - pb;
+                if (a.category !== b.category) return a.category.localeCompare(b.category);
+                return (a.order ?? 0) - (b.order ?? 0);
+            });
+        return arr;
+    }, [products, query, categoryFilter, affiliateFilter]);
+
+    const linkedCount = useMemo(
+        () => products.filter((p) => (p.affiliate_url || "").trim()).length,
+        [products]
+    );
+
     const stats = [
         { label: "Products", value: products.length, icon: Package },
+        { label: "Affiliate links", value: `${linkedCount}/${products.length}`, icon: Link2 },
         { label: "Leads", value: leads.length, icon: Target },
         { label: "Subscribers", value: subs.length, icon: Users },
         { label: "Messages", value: messages.length, icon: Mail },
@@ -393,15 +655,15 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
                     {stats.map((s) => (
                         <div
                             key={s.label}
                             className="bg-ink-100 border border-gold/15 rounded-2xl p-6"
-                            data-testid={`stat-${s.label.toLowerCase()}`}
+                            data-testid={`stat-${s.label.toLowerCase().replace(/\s+/g, "-")}`}
                         >
                             <s.icon className="h-4 w-4 text-gold mb-3" />
-                            <p className="font-serif text-4xl text-cream">{s.value}</p>
+                            <p className="font-serif text-3xl text-cream">{s.value}</p>
                             <p className="text-xs uppercase tracking-[0.25em] text-cream/55 mt-1">
                                 {s.label}
                             </p>
@@ -435,20 +697,78 @@ export default function AdminDashboard() {
                 {/* Products */}
                 {tab === "products" && (
                     <section data-testid="admin-products">
-                        <div className="flex justify-end mb-4">
+                        {/* Filter bar */}
+                        <div className="flex flex-wrap items-center gap-3 mb-5">
+                            <div className="relative flex-1 min-w-[220px]">
+                                <Search className="h-4 w-4 text-cream/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                <input
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    placeholder="Search by title or slug…"
+                                    data-testid="admin-products-search"
+                                    className="w-full bg-ink-100 border border-gold/20 text-cream rounded-full pl-10 pr-4 py-2.5 text-sm font-light outline-none focus:border-gold"
+                                />
+                            </div>
+                            <select
+                                value={categoryFilter}
+                                onChange={(e) => setCategoryFilter(e.target.value)}
+                                data-testid="admin-products-category-filter"
+                                className="bg-ink-100 border border-gold/20 text-cream rounded-full px-4 py-2.5 text-xs uppercase tracking-[0.2em]"
+                            >
+                                <option value="all">All categories</option>
+                                {CATEGORIES.map((c) => (
+                                    <option key={c.slug} value={c.slug}>
+                                        {c.short}
+                                    </option>
+                                ))}
+                            </select>
+                            <select
+                                value={affiliateFilter}
+                                onChange={(e) => setAffiliateFilter(e.target.value)}
+                                data-testid="admin-products-affiliate-filter"
+                                className="bg-ink-100 border border-gold/20 text-cream rounded-full px-4 py-2.5 text-xs uppercase tracking-[0.2em]"
+                            >
+                                <option value="all">All links</option>
+                                <option value="linked">✓ Linked</option>
+                                <option value="not-set">Not set</option>
+                            </select>
                             <button
                                 onClick={() => setCreating(true)}
                                 data-testid="add-product"
-                                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gold text-ink hover:bg-gold-light transition-colors"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gold text-ink hover:bg-gold-light transition-colors ml-auto"
                             >
                                 <Plus className="h-4 w-4" />
-                                <span className="text-sm uppercase tracking-[0.25em] font-medium">
+                                <span className="text-xs uppercase tracking-[0.25em] font-medium">
                                     New product
                                 </span>
                             </button>
                         </div>
+
+                        {/* Result count */}
+                        <p
+                            data-testid="admin-products-count"
+                            className="text-xs text-cream/45 uppercase tracking-[0.25em] mb-3"
+                        >
+                            Showing {visibleProducts.length} of {products.length}
+                        </p>
+
                         {loading ? (
                             <p className="text-cream/60">Loading…</p>
+                        ) : visibleProducts.length === 0 ? (
+                            <div className="bg-ink-100 border border-gold/15 rounded-2xl p-10 text-center">
+                                <p className="text-cream/60 mb-2">No products match these filters.</p>
+                                <button
+                                    onClick={() => {
+                                        setQuery("");
+                                        setCategoryFilter("all");
+                                        setAffiliateFilter("all");
+                                    }}
+                                    className="text-gold text-xs uppercase tracking-[0.25em] hover:underline"
+                                    data-testid="clear-filters"
+                                >
+                                    Clear filters
+                                </button>
+                            </div>
                         ) : (
                             <div className="bg-ink-100 border border-gold/15 rounded-2xl overflow-hidden">
                                 <div className="overflow-x-auto">
@@ -457,16 +777,20 @@ export default function AdminDashboard() {
                                             <tr>
                                                 <th className="p-4">Product</th>
                                                 <th className="p-4">Category</th>
+                                                <th className="p-4">Affiliate</th>
                                                 <th className="p-4">Price</th>
                                                 <th className="p-4">Flags</th>
                                                 <th className="p-4 text-right">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {products.map((p) => {
+                                            {visibleProducts.map((p) => {
                                                 const cat = CATEGORIES.find(
                                                     (c) => c.slug === p.category
                                                 );
+                                                const isPriorityPick =
+                                                    typeof p.priority_order === "number" &&
+                                                    p.priority_order < 999;
                                                 return (
                                                     <tr
                                                         key={p.id}
@@ -481,19 +805,36 @@ export default function AdminDashboard() {
                                                                     className="h-12 w-12 rounded-lg object-cover bg-ink-50"
                                                                 />
                                                                 <div className="min-w-0">
-                                                                    <p className="font-serif text-lg text-cream truncate">
-                                                                        {p.title}
-                                                                    </p>
-                                                                    <p className="text-xs text-cream/45 truncate">
+                                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                                        <p className="font-serif text-lg text-cream truncate max-w-[260px]">
+                                                                            {p.title}
+                                                                        </p>
+                                                                        {isPriorityPick && (
+                                                                            <span
+                                                                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold/20 text-gold text-[10px] uppercase tracking-[0.2em]"
+                                                                                title={`Top Pick #${p.priority_order}`}
+                                                                            >
+                                                                                <Star className="h-3 w-3" />
+                                                                                #{p.priority_order}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <p className="text-xs text-cream/45 truncate max-w-[260px]">
                                                                         /{p.slug}
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td className="p-4 text-cream/70">
+                                                        <td className="p-4 text-cream/70 whitespace-nowrap">
                                                             {cat?.short}
                                                         </td>
-                                                        <td className="p-4 text-gold font-serif text-lg">
+                                                        <td className="p-4">
+                                                            <QuickEditAffiliate
+                                                                product={p}
+                                                                onSaved={onSaved}
+                                                            />
+                                                        </td>
+                                                        <td className="p-4 text-gold font-serif text-lg whitespace-nowrap">
                                                             ${p.price?.toFixed(2)}
                                                         </td>
                                                         <td className="p-4">
@@ -517,12 +858,21 @@ export default function AdminDashboard() {
                                                         </td>
                                                         <td className="p-4 text-right">
                                                             <div className="inline-flex gap-2">
+                                                                <a
+                                                                    href={`/product/${p.slug}`}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    data-testid={`view-public-${p.slug}`}
+                                                                    className="h-9 w-9 inline-flex items-center justify-center rounded-full border border-gold/30 text-cream hover:bg-gold hover:text-ink transition-colors"
+                                                                    title="View public product page"
+                                                                >
+                                                                    <Eye className="h-4 w-4" />
+                                                                </a>
                                                                 <button
-                                                                    onClick={() =>
-                                                                        setEditing(p)
-                                                                    }
+                                                                    onClick={() => setEditing(p)}
                                                                     data-testid={`edit-${p.slug}`}
                                                                     className="h-9 w-9 inline-flex items-center justify-center rounded-full border border-gold/30 text-cream hover:bg-gold hover:text-ink transition-colors"
+                                                                    title="Edit full product"
                                                                 >
                                                                     <Pencil className="h-4 w-4" />
                                                                 </button>
@@ -530,6 +880,7 @@ export default function AdminDashboard() {
                                                                     onClick={() => onDelete(p)}
                                                                     data-testid={`delete-${p.slug}`}
                                                                     className="h-9 w-9 inline-flex items-center justify-center rounded-full border border-red-700/30 text-red-300 hover:bg-red-700 hover:text-cream transition-colors"
+                                                                    title="Delete product"
                                                                 >
                                                                     <Trash2 className="h-4 w-4" />
                                                                 </button>

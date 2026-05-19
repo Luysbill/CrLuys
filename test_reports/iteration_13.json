@@ -1,0 +1,61 @@
+{
+  "summary": "Iteration 13 — Admin Dashboard polish pass (P0+P1+P2) fully verified GREEN. Backend: 3/3 pytest pass (admin sort, partial PUT preserves fields, public regression). Frontend: every NEW admin UX item from the review request validated against the live preview URL, including QuickEditAffiliate happy/invalid/Escape/clear paths, FLAGSHIP window.confirm dialog firing with correct copy + dismiss preserving original state, search/category/affiliate filters, empty-state with clear-filters, Top Pick Rank field, modal URL validation badges, all 5 stat cards (incl. new Affiliate links '0/20'), priority_order sort of first 8 rows, star pills #1-#8, FLAGSHIP/NOT SET/Linked pills, row action buttons (view-public new-tab, edit, delete, quick-edit, test-affiliate), tabs Leads/Subscribers/Messages, mobile horizontal-scroll of the products table (scrollWidth 1016 > clientWidth 340 at 390px), and public/category/product page regressions. Test data scrubbed back to empty affiliate_url at end. Zero console errors.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications_passed": [
+    "Admin login admin@crluys.com / CrLuys2026! → lands on /admin",
+    "Stats grid has 5 cards including stat-affiliate-links showing '0/20'",
+    "Filter bar testids present: admin-products-search, admin-products-category-filter, admin-products-affiliate-filter, add-product, admin-products-count",
+    "Initial count label = 'Showing 20 of 20'",
+    "Priority-ordered top 8 rows exact match: keystone-investors-club, complete-skin-reset-system, ultimate-budget-planner, no-grid-survival-projects, emergency-home-doctor, ultimate-energizer-guide, his-secret-obsession, mega-fitness-bundle",
+    "Gold star pills #1-#8 render on the 8 priority products",
+    "affiliate-status-keystone-investors-club shows gold 'Flagship' pill",
+    "affiliate-status-his-secret-obsession shows red 'Not set' pill",
+    "Row action testids present: view-public-*, edit-*, delete-*, quick-edit-* (verified on his-secret-obsession)",
+    "Quick-edit invalid URL ('not-a-url') → input stays open, save blocked (validation enforced)",
+    "Quick-edit Escape key → input closes, pill remains 'Not set' (no save)",
+    "Quick-edit valid URL save → pill flips to 'Linked', test-affiliate-his-secret-obsession icon appears with target=_blank rel='noopener noreferrer' and href set",
+    "Affiliate stat card updates from '0/20' → '1/20' after save (live recompute)",
+    "Quick-edit clear (empty save) → pill returns to 'Not set' (data cleanup confirmed)",
+    "FLAGSHIP confirm dialog fires on quick-save of keystone-investors-club with message 'Heads-up: keystone-investors-club is the Smart Investing flagship and is alrea...' — dismiss path keeps input open and does NOT save",
+    "Search 'budget' → 'Showing 1 of 20'; clear restores 20",
+    "Category filter 'Smart Investing' → 'Showing 4 of 20'",
+    "Affiliate filter 'Not set' → 'Showing 20 of 20' (correct since all products have empty affiliate_url in DB; flagship pill is a slug-based UI override, not data-driven)",
+    "Affiliate filter '✓ Linked' → 'Showing 0 of 20' (correct, no products have affiliate_url set after test cleanup)",
+    "Empty-state on zzzznomatch → clear-filters button visible; clicking it restores 'Showing 20 of 20'",
+    "Full edit modal contains form-priority_order field (Top Pick Rank)",
+    "Modal affiliate URL field: 'not-a-url' → 'Must start with https' inline badge; replacing with valid https URL → 'Valid' marker",
+    "Tabs Leads, Subscribers, Messages all clickable",
+    "view-public-keystone-investors-club href='/product/keystone-investors-club' target='_blank'",
+    "Mobile 390px: filter bar visible, products table horizontally scrollable (scrollWidth=1016 > clientWidth=340)",
+    "Public regression: /, /category/smart-investing, /product/keystone-investors-club all load without error",
+    "Backend pytest 3/3: admin sort by priority_order matches expected top 8; partial PUT with {affiliate_url} preserves title/price/priority_order; public endpoints unchanged"
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_iter13_admin_polish.py",
+    "/app/test_reports/pytest/iter13_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "QuickEditAffiliate UX is clean: input replaces pill while editing, Escape cancels, save validates via isValidHttpUrl, FLAGSHIP guard uses window.confirm — all paths exercised and pass.",
+    "Affiliate filter 'Not set' currently counts the flagship row too (since its DB affiliate_url is empty). The UI shows 'Flagship' pill for keystone via slug override, but the filter treats it as not-set. Either is defensible, but consider deciding which semantics you want — minor consistency note, not a bug.",
+    "Partial PUT (model_dump(exclude_unset=True)) verified safe: sending only {affiliate_url} preserves title, price, priority_order — exactly what quick-edit needs.",
+    "Backend list sort [('priority_order', 1), ('category', 1), ('order', 1)] returns the strategic top-8 in the expected exact order — confirmed in both pytest and the live admin table.",
+    "Modal URL validation produces both an inline red 'Must start with https' AND a green 'Valid' marker — good real-time UX feedback.",
+    "Star pill (#1–#8) only renders for priority_order < 999 as designed; verified visually on keystone (#1) through mega-fitness-bundle (#8)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter13_admin_polish.py (new)"
+  ],
+  "success_rate": { "backend": "100% (3/3 pytest)", "frontend": "100% (all 24 admin polish review items verified)" },
+  "test_credentials": "Admin: admin@crluys.com / CrLuys2026! — confirmed working.",
+  "seed_data_creation": "None permanent. During testing temporarily set affiliate_url on 'his-secret-obsession' (via both quick-edit and backend PUT) and immediately reverted to empty string. Confirmed final state: 0/20 affiliate links, his-secret pill='Not set'.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 13 admin polish is fully validated. Backend admin sort, partial-PUT, and all 5 stat cards work. AdminDashboard.jsx QuickEditAffiliate component is solid across happy/invalid/Escape/clear/flagship-guard paths. All required data-testid attributes are in place. Test data was scrubbed clean. If next pass introduces real affiliate URLs, re-run /app/backend/tests/test_iter13_admin_polish.py to confirm partial PUT still preserves fields.",
+  "rca of the issue": "n/a — no issues to root-cause"
+}

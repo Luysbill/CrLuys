@@ -25,6 +25,19 @@ export const tokenStore = {
 };
 
 export const SMART_INVESTING_EXTERNAL_URL = "https://wealth-unlock-3.emergent.host/";
+export const SMART_INVESTING_FLAGSHIP_SLUG = "keystone-investors-club";
+
+export function isValidHttpUrl(value) {
+    if (!value || typeof value !== "string") return false;
+    const trimmed = value.trim();
+    if (!trimmed) return false;
+    try {
+        const u = new URL(trimmed);
+        return u.protocol === "http:" || u.protocol === "https:";
+    } catch {
+        return false;
+    }
+}
 
 export const CATEGORIES = [
     {
