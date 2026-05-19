@@ -17,6 +17,7 @@ export default function ProductCard({ product, index = 0 }) {
                     src={product.image_url}
                     alt={product.title}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />

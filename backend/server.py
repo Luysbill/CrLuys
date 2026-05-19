@@ -279,7 +279,7 @@ SEED_PRODUCTS = [
         "short_description": "A practical investment club providing curated insights, market strategies and step-by-step guidance for financial growth.",
         "long_description": "The Keystone Investors Club gives you proven frameworks to think and invest with clarity. Learn how to invest with confidence, build long-term wealth, and master decision-making — even if you are starting from zero.",
         "price": 1254.00,
-        "image_url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://i.postimg.cc/Vk077m6F/thank-you-so-much.png",
         "benefits": [
             "Proven investing frameworks for long-term wealth",
             "Live monthly market analysis & decisions",
@@ -301,7 +301,7 @@ SEED_PRODUCTS = [
         "short_description": "Audio program designed to help you develop the mindset and habits of high-net-worth thinkers.",
         "long_description": "Engineered with frequency-based audio, The Billionaire Brainwave helps you replace scarcity thinking with abundance habits in just 7 minutes a day.",
         "price": 52.65,
-        "image_url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://miro.medium.com/v2/resize:fit:1200/1*8k8ez_vUVEhc9vPDTrCThA.png",
         "benefits": [
             "7-minute daily audio session",
             "Replace limiting beliefs with wealth habits",
@@ -321,7 +321,7 @@ SEED_PRODUCTS = [
         "short_description": "A simple, elegant budget system that helps you track income, expenses and savings in one place.",
         "long_description": "Designed for clarity. Built for execution. The Ultimate Budget Planner turns money confusion into a one-page command center — so you always know where you stand.",
         "price": 42.56,
-        "image_url": "https://images.unsplash.com/photo-1554224154-22dec7ec8818?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://i.etsystatic.com/45607102/r/il/5152c2/6118004692/il_1080xN.6118004692_1umm.jpg",
         "benefits": [
             "All-in-one income & expense dashboard",
             "Automated savings goals tracker",
@@ -341,7 +341,7 @@ SEED_PRODUCTS = [
         "short_description": "A practical guide on how to distribute, allocate and grow money like the financially elite.",
         "long_description": "Stop guessing. Start allocating. The Monetary Distribution Method gives you a clear, repeatable framework for assigning every dollar a job — across spending, investing and freedom.",
         "price": 114.39,
-        "image_url": "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://media.licdn.com/dms/image/v2/D4D12AQElXWW0ng4acg/article-cover_image-shrink_720_1280/B4DZZfrQXTH4AM-/0/1745361904168?e=2147483647&v=beta&t=9sp1qbZkdLg81AFLdRtPv1aJLqr4Ou-_KUTSoMn6LVA",
         "benefits": [
             "The 6-bucket wealth allocation model",
             "Tax-aware distribution strategies",
@@ -361,7 +361,7 @@ SEED_PRODUCTS = [
         "short_description": "Be ready for any emergency at home — without needing instant access to a doctor.",
         "long_description": "A complete digital handbook that helps you handle emergencies and common conditions with calm, clarity and confidence — anytime, anywhere.",
         "price": 49.88,
-        "image_url": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://m.media-amazon.com/images/I/71u28EoG6hL._SY385_.jpg",
         "benefits": [
             "Step-by-step guides for 60+ household emergencies",
             "Natural remedies & evidence-based protocols",
@@ -382,7 +382,7 @@ SEED_PRODUCTS = [
         "short_description": "Improve memory, focus and mental clarity using natural ingredients.",
         "long_description": "NeuroPrime combines clean nootropics with adaptogens for deep, smooth focus — without the crash.",
         "price": 80.15,
-        "image_url": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://theneuroprime.com/assets-mbn/images/one-bottle/img.webp",
         "benefits": [
             "Clinical-grade nootropic stack",
             "Caffeine-free, non-habit forming",
@@ -401,7 +401,7 @@ SEED_PRODUCTS = [
         "short_description": "Supports healthy weight management and balanced blood sugar with a calm, blissful lifestyle.",
         "long_description": "A premium daily supplement formulated with natural extracts to help you feel lighter, leaner and calmer — without the crash.",
         "price": 90.94,
-        "image_url": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://leanbliss.colibrim.ai/leanbliss/leanbliss-buy.png",
         "benefits": [
             "Supports healthy weight",
             "Helps maintain balanced blood sugar",
@@ -421,7 +421,7 @@ SEED_PRODUCTS = [
         "short_description": "A safe, effective male enhancement supplement that supports strength and mental concentration.",
         "long_description": "Aizen Power combines adaptogens and natural extracts to help you feel strong, focused and confident — every day.",
         "price": 83.92,
-        "image_url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://res.cloudinary.com/dmabeivkl/image/upload/w_800,fl_lossy,f_auto/v1684580295/main-image/ufxlowbhuxxjimwc8pms.png",
         "benefits": [
             "Supports male vitality & stamina",
             "Improves mental concentration",
@@ -440,7 +440,7 @@ SEED_PRODUCTS = [
         "short_description": "A powerful greens supplement designed to support energy, immunity and overall health.",
         "long_description": "One scoop. Six nutrient categories. Tonic Greens delivers a high-density blend of greens, mushrooms, antioxidants and probiotics — the easiest way to nourish yourself daily.",
         "price": 79.00,
-        "image_url": "https://images.unsplash.com/photo-1610725664285-7c57e6eeac3f?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://toonicgreens.com/tonicgreens/tonicgreens.webp",
         "benefits": [
             "57+ premium superfoods",
             "Supports immunity & gut health",
@@ -460,7 +460,7 @@ SEED_PRODUCTS = [
         "short_description": "A natural skincare system that supports skin clarity, hydration and a youthful appearance.",
         "long_description": "Reset your skin from the inside out with a calm, intentional routine designed by holistic skin experts.",
         "price": 112.68,
-        "image_url": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://www.digistore24-app.com/pb/img/merchant_2872557/image/product/EH2V9QNR.png",
         "benefits": [
             "5-step natural skin reset",
             "No harsh chemicals",
@@ -480,7 +480,7 @@ SEED_PRODUCTS = [
         "short_description": "A comprehensive guide to the most powerful and nutritious foods you can add to your daily life.",
         "long_description": "From ancient superfoods to modern functional ingredients — this is the ultimate reference for nourishing your body with intention.",
         "price": 51.43,
-        "image_url": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://cch-files.edge.live.ds25.io/cch/v/f2eb1606-8fc1-49a9-af31-c748f4aabf0a/files/6679806627e0d_gp8usy48.png?o=1020&q=high&s=1020",
         "benefits": [
             "200+ power foods catalogued",
             "Meal pairing principles",
@@ -501,7 +501,7 @@ SEED_PRODUCTS = [
         "short_description": "A complete 12-week ketogenic meal plan with 100+ recipes, shopping lists and weekly trackers.",
         "long_description": "Designed to help you burn fat, improve energy and follow a healthy, sustainable lifestyle — without guesswork.",
         "price": 33.69,
-        "image_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://th.bing.com/th/id/OIP.sQHvCqaXjwyQ5UPpPemxVAHaEI?w=317&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
         "benefits": [
             "100+ chef-tested keto recipes",
             "Weekly shopping lists",
@@ -521,7 +521,7 @@ SEED_PRODUCTS = [
         "short_description": "A complete fitness and wellness bundle that delivers workouts, nutrition and mindset content.",
         "long_description": "Six programs in one. Build strength, stay consistent and elevate your lifestyle with this curated bundle.",
         "price": 92.92,
-        "image_url": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://firelaunchers.com/offers/mega-fitness-bundle-with-unrestricted-plr/images/money.png",
         "benefits": [
             "6 expert programs in one bundle",
             "Workouts for every level",
@@ -541,7 +541,7 @@ SEED_PRODUCTS = [
         "short_description": "A practical, hands-on guide with do-it-yourself projects to build your off-grid skills.",
         "long_description": "Learn how to preserve food, purify water, build shelter, and create everyday solutions to live independently — without relying on the system.",
         "price": 47.73,
-        "image_url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://m.media-amazon.com/images/I/71RRpjWLSIL._SY385_.jpg",
         "benefits": [
             "70+ DIY off-grid projects",
             "Food preservation playbook",
@@ -562,7 +562,7 @@ SEED_PRODUCTS = [
         "short_description": "Reduce or eliminate electricity costs and unexpected obligations from utility bills.",
         "long_description": "The Ultimate Energizer Guide shows you how to power your home using alternate energy solutions — clearly, calmly, and step-by-step.",
         "price": 51.05,
-        "image_url": "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://i.ytimg.com/vi/IFqfFMk0eNA/maxresdefault.jpg",
         "benefits": [
             "Step-by-step setup",
             "Reduce monthly utility bills",
@@ -582,7 +582,7 @@ SEED_PRODUCTS = [
         "short_description": "Build your own off-grid generator and gain real energy independence at home.",
         "long_description": "The Ultimate OFF-GRID Generator shows you how to build your own clean power station — reduce energy costs and increase your home's resilience.",
         "price": 62.50,
-        "image_url": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://th.bing.com/th/id/R.7ee3cc0a912c9f4aa194385be219a7ce?rik=8I5D1mUrpjC%2bIA&riu=http%3a%2f%2fmooreammo.com%2fwp-content%2fuploads%2f2023%2f11%2fmain-bundle-rsz.png&ehk=bTq4C%2fRvFlPH1wCYGQIFB%2fGLqH2CdO7QWiBVi5t8wwE%3d&risl=&pid=ImgRaw&r=0",
         "benefits": [
             "Build-it-yourself blueprint",
             "Reduce energy dependency",
@@ -601,7 +601,7 @@ SEED_PRODUCTS = [
         "short_description": "A premium hydrogen-infused water bottle that energizes your body naturally.",
         "long_description": "Feel more energy, recover faster and support your body naturally with the LUMI+ Water Bottle.",
         "price": 97.00,
-        "image_url": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://storage.googleapis.com/accesswire/featureimages/1157349/.jpg",
         "benefits": [
             "Hydrogen-infused water in minutes",
             "Premium build quality",
@@ -621,7 +621,7 @@ SEED_PRODUCTS = [
         "short_description": "A relationship guide that reveals key emotional triggers that build emotional attraction and connection.",
         "long_description": "Built on real-world relationship research, His Secret Obsession reveals how to build deeper, calmer and more honest connection.",
         "price": 54.15,
-        "image_url": "https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://th.bing.com/th/id/OIP.CEV5Y7YRGu57KTKFUs8l_gHaEK?w=321&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
         "benefits": [
             "Build deeper emotional connection",
             "Improve relationship communication",
@@ -641,7 +641,7 @@ SEED_PRODUCTS = [
         "short_description": "A spiritual development journey designed to bring inner balance and self-awareness.",
         "long_description": "Through guided lessons and practical techniques, you'll connect with ancestral wisdom and create a more meaningful, fulfilling life.",
         "price": 297.00,
-        "image_url": "https://images.unsplash.com/photo-1474401860312-eb2316a1aa66?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://avsso.com/wp-content/uploads/2025/03/e1ef28-2aef-b527-ae4b-54308785be7_577e17e1-5696-457d-9cec-7cf84225e62c.webp",
         "benefits": [
             "Guided ancestral healing meditations",
             "Inner balance & self-awareness",
@@ -661,7 +661,7 @@ SEED_PRODUCTS = [
         "short_description": "An audio program designed to improve focus, mental clarity and overall cognitive performance.",
         "long_description": "Just 7 minutes a day. The Genius Wave uses sound-based audio to gently re-tune your thinking patterns for deep clarity and intuition.",
         "price": 53.66,
-        "image_url": "https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1200&q=80",
+        "image_url": "https://i.pinimg.com/564x/85/5b/33/855b33f4887eb5eb4a35affd072b10e9.jpg",
         "benefits": [
             "7-minute daily audio",
             "Improves focus & creativity",

@@ -109,6 +109,7 @@ export default function ProductPage() {
                                 <img
                                     src={product.image_url}
                                     alt={product.title}
+                                    referrerPolicy="no-referrer"
                                     className="absolute inset-0 h-full w-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />

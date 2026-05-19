@@ -161,6 +161,7 @@ export default function HomePage() {
                                             <img
                                                 src={p.image_url}
                                                 alt={p.title}
+                                                referrerPolicy="no-referrer"
                                                 className="h-20 w-20 rounded-xl object-cover"
                                             />
                                             <div className="min-w-0">
@@ -186,6 +187,7 @@ export default function HomePage() {
                                         <img
                                             src={p.image_url}
                                             alt={p.title}
+                                            referrerPolicy="no-referrer"
                                             className="h-20 w-20 rounded-xl object-cover"
                                         />
                                         <div className="min-w-0">

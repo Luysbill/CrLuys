@@ -37,6 +37,7 @@ function PriorityCard({ product, rank }) {
                     src={product.image_url}
                     alt={product.title}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10" />

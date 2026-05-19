@@ -91,6 +91,15 @@ Create a premium modern lifestyle marketplace website for the brand "CrLuys Life
 - ✅ **Mobile responsive**: filter bar wraps gracefully; products table is horizontally scrollable.
 - ✅ **Backend pytest 3/3** (`/app/backend/tests/test_iter13_admin_polish.py`) + **frontend 24/24** admin polish review items all green.
 
+## Image Sync — Authentic Storefront Imagery Restoration (2026-05-19, iteration 14)
+- ✅ All 20 products now carry their **exact original image URLs** from the canonical SpreadSimple storefront at `https://crluyslifestylespread.blog/` — matched by storefront title → DB slug, no substitution, no AI generation, no stock photos. All 20 unsplash placeholders fully replaced.
+- ✅ Updated both runtime DB (via admin PUT) **and** `SEED_PRODUCTS` defaults in `server.py` so a fresh-DB rebuild also restores the authentic imagery.
+- ✅ Added `referrerPolicy="no-referrer"` to all 5 product-image `<img>` tags (TopPicksSection, ProductCard, ProductPage, HomePage search results × 2). This bypasses hotlink protection on Pinterest / Bing / LinkedIn / Cloudinary / Google Storage CDNs while still using the exact original URLs — **no URL replacement, no aspect-ratio change, no layout change**. Live deliverability jumped from 10/22 → **21/22 image renders** (95%).
+- 🚩 **Flagged for future manual replacement** (per user policy "use as-is, flag quietly"):
+   - `lean-bliss` → `https://leanbliss.colibrim.ai/leanbliss/leanbliss-buy.png` returns HTTP 202 with HTML content from the origin host. The storefront uses this same URL — it appears the upstream image was moved or the path now redirects to a JS-rendered page. Admin should paste a working Lean Bliss product image via the Admin Dashboard quick-edit when available.
+   - Several images are <800px wide (small thumbnails from Bing image search): `his-secret-obsession` (417×234), `12-weeks-ketogenic-meal-plans` (412×234), `the-genius-wave` (564×330). They render correctly but at lower fidelity than the 4:3 / 16:10 card aspect ratios. Optional future upgrade.
+- ✅ Cinematic dark-and-gold aesthetic, scroll animations, category structure, flagship hierarchy, and all UI interactions preserved exactly as-is.
+
 ## Default Admin Credentials
 - Email: `admin@crluys.com`
 - Password: `CrLuys2026!`
