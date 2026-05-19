@@ -5,6 +5,7 @@ import TrustBar from "../components/TrustBar";
 import CategorySection from "../components/CategorySection";
 import FeaturedFinancialSection from "../components/FeaturedFinancialSection";
 import TopPicksSection from "../components/TopPicksSection";
+import DiscoveryRibbon from "../components/DiscoveryRibbon";
 import NewsletterCTA from "../components/NewsletterCTA";
 import TestimonialGrid from "../components/TestimonialGrid";
 import { apiClient, CATEGORIES } from "../lib/api";
@@ -209,6 +210,8 @@ export default function HomePage() {
             {!loading && topPicks.length > 0 && (
                 <TopPicksSection products={topPicks} />
             )}
+
+            <DiscoveryRibbon />
 
             {!loading && (
                 <>

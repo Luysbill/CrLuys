@@ -229,6 +229,23 @@ a:focus-visible {
     }
 }
 
+/* ============ Discovery ribbon (slow editorial marquee) ============ */
+.ribbon-track {
+    animation: ribbon-scroll 60s linear infinite;
+}
+.ribbon-track:hover {
+    animation-play-state: paused;
+}
+@keyframes ribbon-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ribbon-track {
+        animation: none;
+    }
+}
+
 /* ============ Tighter section rhythm on small screens ============ */
 @media (max-width: 640px) {
     h1, h2 {

@@ -1,0 +1,54 @@
+{
+  "summary": "Iteration 12 — affiliate URL scrub + DiscoveryRibbon + CategorySection reveal pass. All 15 items from the review request verified GREEN on the live preview URL (desktop 1920x1080 and mobile 390x844). Backend: 7/7 pytest assertions pass. Frontend: ribbon renders between TopPicks and FeaturedFinancial, 10 frames with 60s ribbon-scroll animation running, faded edges, hover-pause CSS rule present in stylesheet, reduced-motion override present. ProductPage with empty affiliate_url shows 3 'Available Soon' badges with Lock icons (hero+mid+final), 'finalising secure access' copy present, 'Get Instant Access' absent. PUT affiliate_url via /api/admin/products/{id} works and reverts cleanly. Zero console errors anywhere.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications_passed": [
+    "Backend GET /api/products → 20 products, NONE contain 'example.com' in affiliate_url, all 20 have empty affiliate_url",
+    "Backend GET /api/products?top_picks=true → 8 products in correct ascending priority_order",
+    "Backend POST /api/auth/login (admin@crluys.com / CrLuys2026!) → 200; /api/auth/me returns role=admin",
+    "Backend GET /api/admin/products → 200, returns >=20 products",
+    "Backend PUT /api/admin/products/{id} with affiliate_url='https://example-real-affiliate.com' → 200, public GET returns the new URL; revert to '' also persists",
+    "Backend GET /api/categories → 5 categories",
+    "Idempotent migration: sudo supervisorctl restart backend → no errors, products still contain 0 example.com URLs after restart",
+    "Frontend: DiscoveryRibbon section present with data-testid='discovery-ribbon'",
+    "Frontend: Ribbon header reads 'Five worlds, one philosophy.' with 'MOOD BOARD · THE ECOSYSTEM' eyebrow",
+    "Frontend: Ribbon .ribbon-track contains 10 frames (5 categories × 2 for seamless loop)",
+    "Frontend: Ribbon animation computed style — animationName=ribbon-scroll, animationDuration=60s, animationPlayState=running",
+    "Frontend: Ribbon section order on homepage: TopPicks (y=1428) → DiscoveryRibbon (y=3452) → FeaturedFinancial (y=4252)",
+    "Frontend: Ribbon has 2 faded gradient overlays (left bg-gradient-to-r + right bg-gradient-to-l)",
+    "Frontend: CSS rule '.ribbon-track:hover { animation-play-state: paused; }' confirmed present in document stylesheets",
+    "Frontend: prefers-reduced-motion override present in /app/frontend/src/index.css (lines 243-244)",
+    "Frontend: All 4 visible CategorySection elements (smart-investing is the FeaturedFinancialSection) carry the 'reveal' class; after scrollIntoView, health-wellness section gains 'is-visible' class, opacity=1, transform=matrix(1,0,0,1,0,0)",
+    "Frontend: /product/12-weeks-ketogenic-meal-plans renders 3 'Available Soon' badges with data-testid='product-affiliate-coming-soon' and 3 lucide Lock icons",
+    "Frontend: 'finalising secure access' copy is present; 'Get Instant Access' is absent on the empty-affiliate product page",
+    "Frontend: Hero CTA (data-testid=hero-cta-start) opens keystone-onboarding modal",
+    "Frontend mobile (390x844): DiscoveryRibbon still renders with 10 frames, ribbon-scroll animation running, width 390 (full bleed)",
+    "Frontend: Zero console errors across homepage, product page, and mobile homepage"
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_iter12_affiliate.py",
+    "/app/test_reports/pytest/iter12_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "DiscoveryRibbon.jsx is clean, lightweight (~70 lines), uses lazy-loaded images, declarative marquee — good.",
+    "ProductPage.jsx hasAffiliate flag with conditional CTA + Lock icon fallback is implemented in all three CTA locations consistently — good.",
+    "Backend migrate_priority_products idempotency confirmed across one full restart cycle; no stale example.com data reintroduced.",
+    "useReveal hook + .reveal class produces a smooth IntersectionObserver-based fade-up; observed 'is-visible' toggle working as expected.",
+    "Minor note: ribbon hover-pause cannot be exercised via Playwright's element.hover() because the marquee animation makes the element perpetually 'unstable' — verified via CSS-rule introspection instead. Not a bug."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter12_affiliate.py (new)"
+  ],
+  "success_rate": { "backend": "100% (7/7 pytest)", "frontend": "100% (all 15 review items verified)" },
+  "test_credentials": "Admin: admin@crluys.com / CrLuys2026! (from /app/memory/test_credentials.md). Used and confirmed working.",
+  "seed_data_creation": "None. Admin PUT test temporarily set affiliate_url on one non-priority product (encyclopedia-of-power-foods) then reverted to empty in same test.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All iter12 items pass. Homepage section order is TopPicks → DiscoveryRibbon → FeaturedFinancial → 4 CategorySections → Testimonials → Newsletter. DiscoveryRibbon testid='discovery-ribbon', track class='.ribbon-track', 10 children, 60s animation. ProductPage with empty affiliate_url renders 3 'Available Soon' badges (testid='product-affiliate-coming-soon'). Backend products all have affiliate_url=''. To test 'Get Instant Access' rendering, PUT a non-empty affiliate_url via /api/admin/products/{id} (requires admin Bearer token from /api/auth/login).",
+  "rca of the issue": "n/a — no regressions found"
+}

@@ -733,7 +733,7 @@ async def seed_products():
     docs = []
     for p in SEED_PRODUCTS:
         doc = {**p}
-        doc.setdefault("affiliate_url", f"https://example.com/affiliate/{p['slug']}")
+        doc.setdefault("affiliate_url", "")
         doc.setdefault("benefits", [])
         doc.setdefault("testimonials", DEFAULT_TESTIMONIALS)
         doc.setdefault("faq", DEFAULT_FAQ)
@@ -762,6 +762,11 @@ async def migrate_priority_products():
     await db.products.update_many(
         {"priority_order": {"$exists": False}},
         {"$set": {"priority_order": 999}},
+    )
+    # Scrub any leftover placeholder affiliate URLs (development artefacts)
+    await db.products.update_many(
+        {"affiliate_url": {"$regex": "^https?://example\\.com/"}},
+        {"$set": {"affiliate_url": ""}},
     )
     for p in PRIORITY_PRODUCTS:
         result = await db.products.update_one(

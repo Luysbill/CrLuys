@@ -4,12 +4,14 @@ import { ArrowRight, TrendingUp, HeartPulse, Dumbbell, Leaf, Brain } from "lucid
 import ProductCard from "./ProductCard";
 import { CATEGORY_IMAGES } from "../lib/api";
 import { useKeystoneOnboarding } from "../lib/keystone-onboarding";
+import useReveal from "../lib/useReveal";
 
 const ICON_MAP = { TrendingUp, HeartPulse, Dumbbell, Leaf, Brain };
 
 export default function CategorySection({ category, products, reverse = false }) {
     const Icon = ICON_MAP[category.icon] || TrendingUp;
     const { openOnboarding } = useKeystoneOnboarding();
+    const revealRef = useReveal();
     const featured = products.filter((p) => p.featured).slice(0, 1);
     const grid = products
         .filter((p) => !featured.find((f) => f.id === p.id))
@@ -19,7 +21,8 @@ export default function CategorySection({ category, products, reverse = false })
         <section
             id={`category-${category.slug}`}
             data-testid={`category-section-${category.slug}`}
-            className="relative py-20 md:py-32 lg:py-40 overflow-hidden"
+            ref={revealRef}
+            className="reveal relative py-20 md:py-32 lg:py-40 overflow-hidden"
         >
             <span
                 className="category-watermark absolute -top-10 right-[-2rem] md:right-[-3rem] text-[28vw] md:text-[20vw] hidden md:block"

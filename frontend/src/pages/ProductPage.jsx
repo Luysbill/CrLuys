@@ -64,19 +64,30 @@ export default function ProductPage() {
     }
 
     const category = CATEGORIES.find((c) => c.slug === product.category);
-    const cta = (
+    const hasAffiliate = Boolean(product.affiliate_url);
+    const cta = hasAffiliate ? (
         <a
-            href={product.affiliate_url || "#"}
+            href={product.affiliate_url}
             target="_blank"
             rel="noopener noreferrer"
             data-testid="product-affiliate-cta"
-            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-9 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] group"
+            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-9 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] active:scale-[0.97] group"
         >
             <span className="text-sm uppercase tracking-[0.3em] font-medium">
                 Get Instant Access
             </span>
             <ExternalLink className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </a>
+    ) : (
+        <div
+            data-testid="product-affiliate-coming-soon"
+            className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-9 py-4 rounded-full border border-gold/40 text-cream/80 select-none"
+        >
+            <span className="text-sm uppercase tracking-[0.3em] font-medium">
+                Available Soon
+            </span>
+            <Lock className="h-4 w-4 text-gold/80" />
+        </div>
     );
 
     return (
@@ -173,7 +184,9 @@ export default function ProductPage() {
 
                             <div className="pt-2">{cta}</div>
                             <p className="text-xs text-cream/45">
-                                Opens secure partner page · External affiliate link in new tab
+                                {hasAffiliate
+                                    ? "Opens secure partner page · External affiliate link in new tab"
+                                    : "We're finalising secure access. Subscribe to be the first to know."}
                             </p>
                         </div>
                     </div>
