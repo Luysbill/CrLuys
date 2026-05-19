@@ -6,7 +6,7 @@ export default function TestimonialGrid({ testimonials = [] }) {
     return (
         <section
             data-testid="testimonial-grid"
-            className="relative py-24"
+            className="relative py-16 sm:py-24"
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="text-center mb-16">

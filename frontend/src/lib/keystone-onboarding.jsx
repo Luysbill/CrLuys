@@ -322,8 +322,9 @@ function KeystoneOnboardingModal({ open, redirectUrl, ctaLabel, onClose }) {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    autoComplete="name"
                                     data-testid="keystone-onboarding-name"
-                                    className="w-full bg-transparent border-b border-gold/30 focus:border-gold outline-none py-2.5 text-cream font-light tracking-tight transition-colors"
+                                    className="w-full bg-transparent border-b border-gold/30 focus:border-gold focus:shadow-[0_4px_24px_-12px_rgba(212,175,55,0.4)] outline-none py-2.5 text-cream font-light tracking-tight transition-all duration-300"
                                 />
                             </div>
                             <div>
@@ -335,9 +336,10 @@ function KeystoneOnboardingModal({ open, redirectUrl, ctaLabel, onClose }) {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    autoComplete="email"
                                     data-testid="keystone-onboarding-email"
                                     placeholder="you@private.email"
-                                    className="w-full bg-transparent border-b border-gold/30 focus:border-gold outline-none py-2.5 text-cream font-light placeholder-cream/30 tracking-tight transition-colors"
+                                    className="w-full bg-transparent border-b border-gold/30 focus:border-gold focus:shadow-[0_4px_24px_-12px_rgba(212,175,55,0.4)] outline-none py-2.5 text-cream font-light placeholder-cream/30 tracking-tight transition-all duration-300"
                                 />
                             </div>
                         </div>
@@ -356,7 +358,7 @@ function KeystoneOnboardingModal({ open, redirectUrl, ctaLabel, onClose }) {
                                 type="submit"
                                 disabled={phase === "submitting"}
                                 data-testid="keystone-onboarding-submit"
-                                className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_28px_rgba(212,175,55,0.5)] disabled:opacity-70 group"
+                                className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_28px_rgba(212,175,55,0.5)] active:scale-[0.97] disabled:opacity-70 group"
                             >
                                 {phase === "submitting" ? (
                                     <>

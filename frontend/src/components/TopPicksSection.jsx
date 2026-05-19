@@ -120,21 +120,21 @@ export default function TopPicksSection({ products = [] }) {
     return (
         <section
             data-testid="top-picks-section"
-            className="relative py-28 md:py-36 overflow-hidden"
+            className="relative py-20 md:py-32 lg:py-36 overflow-hidden"
         >
             <div className="absolute inset-0 -z-10">
                 <div className="absolute top-1/2 -right-32 h-[400px] w-[400px] rounded-full bg-gold/10 blur-[140px] pointer-events-none" />
             </div>
             <div className="max-w-7xl mx-auto px-6 md:px-12">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end mb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-end mb-12 md:mb-16">
                     <div className="lg:col-span-7">
-                        <div className="inline-flex items-center gap-3 mb-5 px-4 py-2 rounded-full glass">
+                        <div className="inline-flex items-center gap-3 mb-5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass">
                             <TrendingUp className="h-3.5 w-3.5 text-gold" />
-                            <span className="text-[10px] uppercase tracking-[0.5em] text-gold/95">
+                            <span className="text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] text-gold/95">
                                 Strategic Top Picks · Curated by engagement
                             </span>
                         </div>
-                        <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl text-cream leading-[0.95] tracking-tighter">
+                        <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream leading-[0.95] tracking-tighter">
                             The eight that
                             <br />
                             <span className="italic gold-gradient-text">

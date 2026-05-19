@@ -35,14 +35,14 @@ export default function Hero() {
                         className="brand-logo-soft hidden md:block h-20 w-auto mb-8 opacity-95 select-none"
                         draggable={false}
                     />
-                    <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 rounded-full glass">
-                        <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
-                        <span className="text-[11px] uppercase tracking-[0.35em] text-cream/85">
+                    <div className="inline-flex items-center gap-3 mb-5 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass">
+                        <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gold animate-pulse" />
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.3em] sm:tracking-[0.35em] text-cream/85">
                             A Premium Lifestyle Ecosystem
                         </span>
                     </div>
 
-                    <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream leading-[0.92] tracking-tighter font-light">
+                    <h1 className="font-serif text-[2.6rem] xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream leading-[0.95] tracking-tighter font-light">
                         Elevate Your{" "}
                         <span className="italic gold-gradient-text">Health.</span>
                         <br />
@@ -50,13 +50,13 @@ export default function Hero() {
                         <span className="italic gold-gradient-text">Life.</span>
                     </h1>
 
-                    <p className="mt-8 text-cream/75 text-lg md:text-xl font-light leading-relaxed max-w-xl">
+                    <p className="mt-6 sm:mt-8 text-cream/75 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-xl">
                         Curated lifestyle resources for those who refuse to settle —
                         wellness, financial freedom, fitness, mindset & intentional living,
                         in one cinematic ecosystem.
                     </p>
 
-                    <div className="mt-10 flex flex-wrap items-center gap-3">
+                    <div className="mt-7 sm:mt-10 flex flex-wrap items-center gap-3">
                         <button
                             type="button"
                             onClick={() =>
@@ -66,9 +66,9 @@ export default function Hero() {
                                 )
                             }
                             data-testid="hero-cta-start"
-                            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] group"
+                            className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gold text-ink hover:bg-gold-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.45)] active:scale-[0.97] group"
                         >
-                            <span className="text-sm uppercase tracking-[0.3em] font-medium">
+                            <span className="text-[12px] sm:text-sm uppercase tracking-[0.28em] sm:tracking-[0.3em] font-medium">
                                 Start Your Transformation
                             </span>
                             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -76,10 +76,10 @@ export default function Hero() {
                         <a
                             href="#trust"
                             data-testid="hero-cta-trust"
-                            className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-gold/40 text-cream hover:text-gold transition-colors"
+                            className="inline-flex items-center gap-2 px-5 sm:px-6 py-3.5 sm:py-4 rounded-full border border-gold/40 text-cream hover:text-gold hover:border-gold transition-colors active:scale-[0.97]"
                         >
                             <ShieldCheck className="h-4 w-4" />
-                            <span className="text-sm uppercase tracking-[0.3em]">
+                            <span className="text-[12px] sm:text-sm uppercase tracking-[0.28em] sm:tracking-[0.3em]">
                                 Why CrLuys
                             </span>
                         </a>

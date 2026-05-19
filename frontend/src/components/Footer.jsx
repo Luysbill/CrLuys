@@ -28,23 +28,23 @@ export default function Footer() {
     return (
         <footer
             data-testid="site-footer"
-            className="relative bg-ink-50 border-t border-gold/15 mt-32 pt-24 pb-12 overflow-hidden"
+            className="relative bg-ink-50 border-t border-gold/15 mt-20 sm:mt-32 pt-16 sm:pt-24 pb-10 sm:pb-12 overflow-hidden"
         >
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-64 w-[120%] bg-gold/5 blur-3xl pointer-events-none" />
 
             <div className="relative max-w-7xl mx-auto px-6 md:px-12">
-                <div className="text-center mb-20">
-                    <p className="text-[11px] uppercase tracking-[0.5em] text-gold/80 mb-6">
+                <div className="text-center mb-14 sm:mb-20">
+                    <p className="text-[11px] uppercase tracking-[0.5em] text-gold/80 mb-5 sm:mb-6">
                         The CrLuys Promise
                     </p>
-                    <h2 className="font-serif text-4xl md:text-6xl text-cream leading-tight">
+                    <h2 className="font-serif text-3xl sm:text-4xl md:text-6xl text-cream leading-tight">
                         Elevate Your Health.
                         <br />
                         <span className="gold-gradient-text italic">Elevate Your Life.</span>
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-10 sm:gap-12 mb-14 sm:mb-20">
                     <div className="md:col-span-5">
                         <Link to="/" className="inline-block mb-5">
                             <img

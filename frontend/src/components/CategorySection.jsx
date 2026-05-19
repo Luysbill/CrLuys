@@ -19,7 +19,7 @@ export default function CategorySection({ category, products, reverse = false })
         <section
             id={`category-${category.slug}`}
             data-testid={`category-section-${category.slug}`}
-            className="relative py-28 md:py-40 overflow-hidden"
+            className="relative py-20 md:py-32 lg:py-40 overflow-hidden"
         >
             <span
                 className="category-watermark absolute -top-10 right-[-2rem] md:right-[-3rem] text-[28vw] md:text-[20vw] hidden md:block"
@@ -30,7 +30,7 @@ export default function CategorySection({ category, products, reverse = false })
 
             <div className="relative max-w-7xl mx-auto px-6 md:px-12">
                 <div
-                    className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-16 ${
+                    className={`grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-20 items-center mb-12 md:mb-16 ${
                         reverse ? "lg:[direction:rtl]" : ""
                     }`}
                 >
@@ -62,7 +62,7 @@ export default function CategorySection({ category, products, reverse = false })
                                 {category.number} — Curated Collection
                             </span>
                         </div>
-                        <h2 className="font-serif text-5xl md:text-6xl text-cream leading-[0.95] mb-6 tracking-tight">
+                        <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-cream leading-[0.95] mb-5 sm:mb-6 tracking-tight">
                             {category.name.split(" & ")[0]}
                             {category.name.includes(" & ") && (
                                 <>

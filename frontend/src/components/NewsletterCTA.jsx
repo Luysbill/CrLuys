@@ -25,7 +25,7 @@ export default function NewsletterCTA() {
     return (
         <section
             data-testid="newsletter-section"
-            className="relative py-32 overflow-hidden"
+            className="relative py-20 md:py-32 overflow-hidden"
         >
             <div className="absolute inset-0 -z-10">
                 <div className="absolute inset-0 bg-gradient-to-br from-ink-50 via-ink to-ink-50" />
@@ -35,12 +35,12 @@ export default function NewsletterCTA() {
                 <p className="text-[11px] uppercase tracking-[0.5em] text-gold/80 mb-5">
                     The Private List
                 </p>
-                <h2 className="font-serif text-4xl md:text-6xl text-cream leading-[1.05] tracking-tight mb-6">
+                <h2 className="font-serif text-3xl sm:text-4xl md:text-6xl text-cream leading-[1.05] tracking-tight mb-5 sm:mb-6">
                     Lifestyle drops, sent like
                     <br />
                     <span className="italic gold-gradient-text">love letters.</span>
                 </h2>
-                <p className="text-cream/65 font-light text-lg mb-10 max-w-xl mx-auto">
+                <p className="text-cream/65 font-light text-base sm:text-lg mb-8 sm:mb-10 max-w-xl mx-auto">
                     Receive curated recommendations, exclusive offers and intentional
                     living rituals — directly in your inbox.
                 </p>

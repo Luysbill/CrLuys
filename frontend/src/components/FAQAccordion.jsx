@@ -7,7 +7,7 @@ export default function FAQAccordion({ items = [] }) {
     return (
         <section
             data-testid="faq-section"
-            className="relative py-24"
+            className="relative py-16 sm:py-24"
         >
             <div className="max-w-3xl mx-auto px-6">
                 <div className="text-center mb-14">

@@ -14,7 +14,7 @@ export default function TrustBar() {
         <section
             id="trust"
             data-testid="trust-bar"
-            className="relative py-16 border-y border-gold/15 bg-ink-50/40"
+            className="relative py-10 sm:py-16 border-y border-gold/15 bg-ink-50/40"
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-6">

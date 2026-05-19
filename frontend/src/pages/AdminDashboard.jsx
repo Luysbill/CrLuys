@@ -549,7 +549,7 @@ export default function AdminDashboard() {
                 {tab === "leads" && (
                     <section data-testid="admin-leads" className="space-y-4">
                         {leads.length === 0 ? (
-                            <p className="text-cream/55">No leads yet — onboarding modal will capture them.</p>
+                            <p className="text-cream/55">No leads captured yet.</p>
                         ) : (
                             <div className="bg-ink-100 border border-gold/15 rounded-2xl overflow-hidden">
                                 <div className="overflow-x-auto">

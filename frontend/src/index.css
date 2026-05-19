@@ -194,6 +194,48 @@ html {
     scrollbar-width: none;
 }
 
+/* ============ Scroll reveal (IntersectionObserver-friendly) ============ */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ Refined button focus/active states ============ */
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible {
+    outline: 1px solid rgba(212, 175, 55, 0.55);
+    outline-offset: 3px;
+    border-radius: 999px;
+}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ============ Tighter section rhythm on small screens ============ */
+@media (max-width: 640px) {
+    h1, h2 {
+        letter-spacing: -0.015em;
+    }
+}
+
 /* ============ Brand Logo blending ============ */
 .brand-logo {
     /* Logo PNG already has proper alpha — just add subtle hover affordance */

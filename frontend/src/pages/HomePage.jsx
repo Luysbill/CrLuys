@@ -99,7 +99,7 @@ export default function HomePage() {
             <section
                 id="search-section"
                 data-testid="search-section"
-                className="relative py-12"
+                className="relative py-8 sm:py-12"
             >
                 <div className="max-w-4xl mx-auto px-6 md:px-12">
                     <div className="glass rounded-2xl p-3 md:p-2 flex flex-col md:flex-row items-stretch md:items-center gap-2">
